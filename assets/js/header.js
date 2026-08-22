@@ -1,4 +1,4 @@
-fetch("components/header.html")
+fetch("/PortafolioMonica/components/header.html")
   .then(response => {
     if (!response.ok) {
       throw new Error("No se pudo cargar el header");
@@ -13,7 +13,7 @@ fetch("components/header.html")
 
     // Cargar main.js después del header
     const mainScript = document.createElement("script");
-    mainScript.src = "assets/js/main.js";
+    mainScript.src = "/PortafolioMonica/assets/js/main.js";
 
     mainScript.onload = function () {
 
