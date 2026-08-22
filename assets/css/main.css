@@ -204,11 +204,14 @@ h6 {
   background: var(--accent-color);
 }
 
-@media (min-width: 1200px) {
+#header-container {
+  display: contents;
+}
 
-  .header~main,
-  .header~#footer {
-    margin-left: 310px;
+@media (min-width: 1200px) {
+  #header-container ~ main,
+  #header-container ~ #footer {
+    margin-left: 300px;
   }
 }
 

@@ -30,66 +30,7 @@
 
 <body class="index-page">
 
-  <header id="header" class="header dark-background d-flex flex-column justify-content-between">
-    <i class="header-toggle d-xl-none bi bi-list"></i>
-
-    <div class="header-top">
-      <div class="profile-img">
-        <img src="assets/img/profile/mio.png" alt="" class="img-fluid">
-      </div>
-
-      <a href="index.html" class="logo d-flex align-items-center justify-content-center w-100">
-        <h1 class="sitename text-center w-100">Monica Isabel Lopez Alcocer</h1>
-      </a>
-
-    </div>
-
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="#about"><i class="bi bi-person navicon"></i> Sobre Mi</a></li>
-
-        <!-- PARCIAL 1 -->
-        <li class="dropdown"><a href="#services"><i class="bi bi-menu-button navicon"></i> <span>PARCIAL 1</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-          <ul>
-            <li><a href="#">Actividad 1</a></li>
-            <li><a href="#">Actividad 2</a></li>
-            <li><a href="#">Actividad 3</a></li>
-            <li><a href="#">Actividad 4</a></li>
-          </ul>
-        </li>
-
-        <!-- PARCIAL 2 -->
-        <li class="dropdown"><a href="#services2"><i class="bi bi-menu-button navicon"></i> <span>PARCIAL 2</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-          <ul>
-            <li><a href="#">Actividad 1</a></li>
-            <li><a href="#">Actividad 2</a></li>
-            <li><a href="#">Actividad 3</a></li>
-            <li><a href="#">Actividad 4</a></li>
-          </ul>
-        </li>
-
-        <!-- PARCIAL 3 -->
-        <li class="dropdown"><a href="#services3"><i class="bi bi-menu-button navicon"></i> <span>PARCIAL 3</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-          <ul>
-            <li><a href="#">Actividad 1</a></li>
-            <li><a href="#">Actividad 2</a></li>
-            <li><a href="#">Actividad 3</a></li>
-            <li><a href="#">Actividad 4</a></li>
-          </ul>
-        </li>
-
-        <li><a href="#contacto"><i class="bi bi-envelope navicon"></i> Contacto</a></li>
-      </ul>
-    </nav>
-
-    <div class="social-links text-center">
-      <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-      <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
-      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-    </div>
-  </header>
+  <div id="header-container"></div>
 
   <main class="main">
 
@@ -112,7 +53,7 @@
                 <div class="col-lg-4" data-aos="fade-right" data-aos-delay="200">
                   <div class="profile-section">
                     <div class="profile-image-container">
-                      <img src="assets/img/profile/profile-square-15.webp" class="img-fluid" alt="Sarah Chen">
+                      <img src="assets/img/profile/yo.png" class="img-fluid" alt="Sarah Chen">
                     </div>
                     <div class="profile-meta">
                       <div class="location">
@@ -192,69 +133,24 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>PARCIAL 1</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h4>Fundamentos de ciberseguridad</h4>
+        <p>En este primer parcial se abordan los conceptos fundamentales de la ciberseguridad, con el propósito de comprender la importancia de proteger la información, 
+          los sistemas y los recursos digitales ante posibles amenazas. Se estudian principios básicos como la confidencialidad, integridad y disponibilidad 
+          de la información, además de identificar algunos de los riesgos, vulnerabilidades y ataques más comunes dentro de los entornos tecnológicos.</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row g-5">
 
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-palette"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Brand Identity Design</a></h3>
-                <p>Crafting distinctive visual identities that capture your brand's essence and connect with your target audience through thoughtful design systems.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="250">
             <div class="service-item">
               <div class="service-icon">
-                <i class="bi bi-code-slash"></i>
+                <i class="bi bi-code-slash"></i> <!-- Este es el icon (bi-phone, bi-megaphone, bi-palette)-->
               </div>
               <div class="service-content">
                 <h3><a href="service-details.html">Web Development</a></h3>
                 <p>Building modern, responsive websites and applications with clean code, optimal performance, and seamless user experiences across all devices.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="300">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-phone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">UI/UX Design</a></h3>
-                <p>Designing intuitive interfaces and user experiences that balance aesthetics with functionality, ensuring every interaction feels natural and purposeful.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="350">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-megaphone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Digital Strategy</a></h3>
-                <p>Developing comprehensive digital strategies that align with your business goals and maximize your online presence through data-driven insights.</p>
                 <a href="service-details.html" class="read-more">
                   <span>Learn More</span>
                   <i class="bi bi-arrow-right"></i>
@@ -275,76 +171,16 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>PARCIAL 2</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h4>Sistemas de gestión de la seguridad</h4>
+        <p>Durante el segundo parcial se analizan los sistemas de gestión de la seguridad de la información y su importancia dentro de las organizaciones. 
+          Se estudian diferentes métodos, políticas y medidas de protección que permiten administrar los riesgos de manera adecuada, establecer controles 
+          de seguridad y mantener protegida la información. También se reconoce la importancia de contar con procedimientos que ayuden a prevenir incidentes 
+          y garantizar un entorno tecnológico más seguro.</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row g-5">
-
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-palette"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Brand Identity Design</a></h3>
-                <p>Crafting distinctive visual identities that capture your brand's essence and connect with your target audience through thoughtful design systems.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="250">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-code-slash"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Web Development</a></h3>
-                <p>Building modern, responsive websites and applications with clean code, optimal performance, and seamless user experiences across all devices.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="300">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-phone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">UI/UX Design</a></h3>
-                <p>Designing intuitive interfaces and user experiences that balance aesthetics with functionality, ensuring every interaction feels natural and purposeful.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="350">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-megaphone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Digital Strategy</a></h3>
-                <p>Developing comprehensive digital strategies that align with your business goals and maximize your online presence through data-driven insights.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
 
         </div>
 
@@ -358,76 +194,16 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>PARCIAL 3</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h4>Temas actuales en seguridad informática</h4>
+        <p>En el tercer parcial se estudian algunos de los temas y desafíos actuales relacionados con la seguridad informática, considerando la constante 
+          evolución de la tecnología y de las amenazas digitales. Se analizan nuevas formas de ataque, riesgos presentes en internet y distintas estrategias 
+          utilizadas para proteger dispositivos, redes y datos. Este parcial permite comprender cómo la ciberseguridad debe actualizarse continuamente para 
+          responder a los nuevos problemas que surgen en el entorno digital.</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row g-5">
-
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-palette"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Brand Identity Design</a></h3>
-                <p>Crafting distinctive visual identities that capture your brand's essence and connect with your target audience through thoughtful design systems.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="250">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-code-slash"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Web Development</a></h3>
-                <p>Building modern, responsive websites and applications with clean code, optimal performance, and seamless user experiences across all devices.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="300">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-phone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">UI/UX Design</a></h3>
-                <p>Designing intuitive interfaces and user experiences that balance aesthetics with functionality, ensuring every interaction feels natural and purposeful.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="350">
-            <div class="service-item">
-              <div class="service-icon">
-                <i class="bi bi-megaphone"></i>
-              </div>
-              <div class="service-content">
-                <h3><a href="service-details.html">Digital Strategy</a></h3>
-                <p>Developing comprehensive digital strategies that align with your business goals and maximize your online presence through data-driven insights.</p>
-                <a href="service-details.html" class="read-more">
-                  <span>Learn More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
 
         </div>
 
@@ -574,7 +350,7 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/header.js"></script>
 
   <script>
     const formulario = document.getElementById("contact-form");
