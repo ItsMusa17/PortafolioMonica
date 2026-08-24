@@ -1,0 +1,343 @@
+<!--
+  =========================================================================
+  PLANTILLA DE ACTIVIDAD
+  -------------------------------------------------------------------------
+  CÓMO CREAR UNA ACTIVIDAD NUEVA (5 minutos):
+
+    1. Copia este archivo dentro de la carpeta del parcial que corresponda:
+         parcial1/actividad_2.html      (o parcial2/, parcial3/)
+       Las rutas están escritas para ESA ubicación (data-base="../"),
+       por eso la plantilla no se ve bien si la abres desde /plantillas/.
+
+    2. Busca en el archivo los comentarios "EDITAR" y cambia:
+         TÍTULO · PARCIAL · NÚMERO DE ACTIVIDAD · FECHA · TIPO
+         INTRODUCCIÓN · OBJETIVO · DESARROLLO · CONCEPTOS · HERRAMIENTAS
+         EVIDENCIAS (imágenes) · APRENDIZAJES · CONCLUSIÓN · PDF
+
+    3. Guarda el PDF de la actividad en:
+         assets/pdf/parcialN/actividad_N.pdf
+
+    4. Guarda las capturas en:
+         assets/img/evidencias/parcialN/actividad_N/
+
+    5. Registra la actividad en assets/js/portafolio-data.js
+       (bloque "actividades" del parcial). Con eso aparece sola en el menú,
+       en las tarjetas del parcial y en la navegación anterior / siguiente.
+
+    NO necesitas copiar el menú ni el pie de página: se generan solos.
+
+  ESTRUCTURA DE LA PÁGINA:
+    · Cabecera centrada con el título y la miga de pan.
+    · Columna izquierda: el desarrollo de la actividad.
+    · Columna derecha: datos, índice y descarga del PDF (se queda fija
+      al desplazar en pantallas grandes y pasa abajo en el celular).
+  =========================================================================
+-->
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Actividad N – Nombre de la actividad | Monica Lopez</title>
+  <meta name="description" content="EDITAR: resumen breve de la actividad para buscadores.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <!-- =====================================================
+           CABECERA
+           EDITAR: parcial, número de actividad, título y miga de pan
+      ====================================================== -->
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 1 · Actividad N</span>
+          <h1>EDITAR: nombre de la actividad</h1>
+          <p class="subtitulo">EDITAR: una línea que resuma de qué trata la actividad.</p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial1.html">Parcial 1</a></li>
+              <li><span aria-current="page">Actividad N</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <!-- ===================================================
+               COLUMNA IZQUIERDA · DESARROLLO DE LA ACTIVIDAD
+          ==================================================== -->
+          <div class="actividad-principal">
+
+            <!-- =========================
+                 EDITAR: INTRODUCCIÓN
+            ========================= -->
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                EDITAR: explica brevemente de qué trata la actividad y en qué contexto del parcial
+                se realizó.
+              </p>
+            </section>
+
+            <!-- =========================
+                 EDITAR: OBJETIVO
+            ========================= -->
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>EDITAR: qué se buscaba aprender o demostrar con esta actividad.</p>
+            </section>
+
+            <!-- =========================
+                 EDITAR: DESARROLLO
+            ========================= -->
+            <section class="seccion-actividad" id="desarrollo" data-aos="fade-up">
+              <h2>Desarrollo</h2>
+              <p>EDITAR: describe paso a paso qué se hizo.</p>
+
+              <!-- Bloque de código (opcional): borra esta etiqueta pre si no la usas -->
+              <pre><code>EDITAR: aquí puedes pegar comandos o código si la actividad lo requiere.</code></pre>
+
+              <!-- Tabla (opcional): borra este bloque si no la usas -->
+              <div class="tabla-envoltura">
+                <table>
+                  <caption class="solo-lectores">EDITAR: descripción de la tabla</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">EDITAR columna 1</th>
+                      <th scope="col">EDITAR columna 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>EDITAR dato</td>
+                      <td>EDITAR dato</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- =========================
+                 EDITAR: CONCEPTOS PRINCIPALES
+            ========================= -->
+            <section class="seccion-actividad" id="conceptos" data-aos="fade-up">
+              <h2>Conceptos principales</h2>
+              <div class="rejilla rejilla-2">
+                <div class="artefacto">
+                  <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                  <div>
+                    <h4>EDITAR: concepto</h4>
+                    <p>EDITAR: definición breve con tus palabras.</p>
+                  </div>
+                </div>
+                <div class="artefacto">
+                  <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                  <div>
+                    <h4>EDITAR: concepto</h4>
+                    <p>EDITAR: definición breve con tus palabras.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- =========================
+                 EDITAR: HERRAMIENTAS O TECNOLOGÍAS
+                 (si no aplica, borra esta sección y su enlace del índice)
+            ========================= -->
+            <section class="seccion-actividad" id="herramientas" data-aos="fade-up">
+              <h2>Herramientas o tecnologías utilizadas</h2>
+              <ul class="etiquetas">
+                <li><span class="etiqueta">EDITAR herramienta</span></li>
+                <li><span class="etiqueta">EDITAR herramienta</span></li>
+              </ul>
+            </section>
+
+            <!-- =========================
+                 EDITAR: EVIDENCIAS (imágenes, capturas, diagramas)
+                 Guarda las imágenes en:
+                   assets/img/evidencias/parcialN/actividad_N/
+                 La clase "glightbox" permite abrir la imagen en grande.
+            ========================= -->
+            <section class="seccion-actividad" id="evidencias" data-aos="fade-up">
+              <h2>Evidencias</h2>
+              <p>EDITAR: una línea explicando qué se muestra en las capturas.</p>
+
+              <div class="galeria-evidencias">
+                <figure class="evidencia">
+                  <a class="glightbox" href="../assets/img/evidencias/parcial1/actividad_N/captura-1.png"
+                     data-gallery="actividad" data-title="EDITAR: título de la captura">
+                    <img src="../assets/img/evidencias/parcial1/actividad_N/captura-1.png"
+                         alt="EDITAR: describe lo que se ve en la captura" loading="lazy">
+                  </a>
+                  <figcaption>EDITAR: pie de imagen 1</figcaption>
+                </figure>
+
+                <figure class="evidencia">
+                  <a class="glightbox" href="../assets/img/evidencias/parcial1/actividad_N/captura-2.png"
+                     data-gallery="actividad" data-title="EDITAR: título de la captura">
+                    <img src="../assets/img/evidencias/parcial1/actividad_N/captura-2.png"
+                         alt="EDITAR: describe lo que se ve en la captura" loading="lazy">
+                  </a>
+                  <figcaption>EDITAR: pie de imagen 2</figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <!-- =========================
+                 EDITAR: APRENDIZAJES OBTENIDOS
+            ========================= -->
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>EDITAR: primer aprendizaje.</li>
+                <li>EDITAR: segundo aprendizaje.</li>
+              </ul>
+            </section>
+
+            <!-- =========================
+                 EDITAR: CONCLUSIÓN
+            ========================= -->
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                EDITAR: reflexión personal sobre lo que dejó esta actividad.
+              </blockquote>
+            </section>
+
+            <!-- ===================================================
+                 NAVEGACIÓN ENTRE ACTIVIDADES
+                 EDITAR: solo los dos números (parcial y actividad).
+                 Los enlaces anterior y siguiente se calculan solos a
+                 partir de assets/js/portafolio-data.js
+            ==================================================== -->
+            <nav data-nav-actividad data-parcial="1" data-actividad="N" aria-label="Navegación entre actividades"></nav>
+
+          </div>
+
+          <!-- ===================================================
+               COLUMNA DERECHA · DATOS, ÍNDICE Y DESCARGA
+          ==================================================== -->
+          <aside class="actividad-lateral" data-aos="fade-left">
+
+            <!-- =========================
+                 EDITAR: DATOS DE LA ACTIVIDAD
+            ========================= -->
+            <div class="ficha-lateral">
+              <h2>Datos de la actividad</h2>
+              <ul class="lista-datos">
+                <li>
+                  <span class="etiqueta">Parcial</span>
+                  <span class="valor">1</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Actividad</span>
+                  <span class="valor">N</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Asignatura</span>
+                  <span class="valor">CNO IV – Seguridad Informática</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Fecha</span>
+                  <span class="valor">EDITAR: dd/mm/aaaa</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Tipo de actividad</span>
+                  <span class="valor">EDITAR: investigación, práctica, análisis…</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- =========================
+                 ÍNDICE DE LA PÁGINA
+                 Si borras una sección arriba, borra también su enlace aquí.
+            ========================= -->
+            <nav class="ficha-lateral indice-pagina" aria-label="Contenido de la actividad">
+              <h2>Contenido</h2>
+              <ol>
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#objetivo">Objetivo</a></li>
+                <li><a href="#desarrollo">Desarrollo</a></li>
+                <li><a href="#conceptos">Conceptos principales</a></li>
+                <li><a href="#herramientas">Herramientas</a></li>
+                <li><a href="#evidencias">Evidencias</a></li>
+                <li><a href="#aprendizajes">Aprendizajes</a></li>
+                <li><a href="#conclusion">Conclusión</a></li>
+              </ol>
+            </nav>
+
+            <!-- =========================
+                 EDITAR: PDF DE LA ACTIVIDAD
+                 Guarda el archivo en:  assets/pdf/parcialN/actividad_N.pdf
+            ========================= -->
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>Evidencia original</h3>
+              <p>El documento tal como se entregó en la asignatura.</p>
+
+              <a class="boton" href="../assets/pdf/parcial1/actividad_N.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+
+              <!-- Borra esta nota cuando ya hayas subido el PDF -->
+              <p class="nota text-muted">
+                [PENDIENTE] Coloca el archivo en <code>assets/pdf/parcial1/actividad_N.pdf</code>
+              </p>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>

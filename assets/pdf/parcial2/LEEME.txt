@@ -1,0 +1,11 @@
+PDF DE LAS ACTIVIDADES DEL PARCIAL 2
+-------------------------------------
+Guarda aquí los archivos con este nombre:
+
+  actividad_1.pdf
+  actividad_2.pdf
+  actividad_3.pdf
+  ...
+
+El botón "Descargar actividad en PDF" de cada página apunta a:
+  ../assets/pdf/parcial2/actividad_N.pdf

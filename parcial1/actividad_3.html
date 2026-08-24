@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Actividad 1 – Análisis de ciberataque | Monica Lopez</title>
+  <meta name="description" content="Actividad 1 del Parcial 1 de CNO IV – Seguridad Informática: análisis de un ciberataque.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <!-- =====================================================
+           CABECERA
+           EDITAR: parcial, número de actividad, título y miga de pan
+      ====================================================== -->
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 1 · Actividad 3</span>
+          <h1>No presiones Esc... todavía</h1>
+          <p class="subtitulo">
+            Implementar y documentar un programa en Python capaz de registrar eventos del teclado y almacenar la información de forma persistente.
+          </p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial1.html">Parcial 1</a></li>
+              <li><span aria-current="page">Actividad 3</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                En esta actividad se desarrolla un programa en Python para detectar y registrar eventos del teclado mediante la librería pynput.
+                El programa identifica cuándo una tecla es presionada o liberada, asigna una fecha y hora a cada evento y almacena la información
+                de manera persistente en un archivo local.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                Implementar y comprender el funcionamiento de un sistema de registro de eventos del teclado, incorporando persistencia de datos,
+                asociación temporal e identificación individual de cada evento generado durante la ejecución del programa.
+              </p>
+            </section>
+
+                        <section class="seccion-actividad" id="desarrollo" data-aos="fade-up">
+              <h2>Codigo</h2>
+
+              <!-- Bloque de código (opcional): borra esta etiqueta pre si no la usas -->
+              <pre><code># Importa las clases necesarias de pynput para detectar eventos del teclado
+from pynput.keyboard import Key, Listener
+# Importa la función datetime para obtener la fecha y hora actual
+from datetime import datetime
+# Variable global que almacena la cantidad de eventos registrados
+contador_eventos = 0
+
+
+#Crea un identificador único y consecutivo para cada 
+#eventoregistrado en el teclado.
+def generar_evento():
+    global contador_eventos
+
+    # Aumenta el contador cada vez que ocurre un evento
+    contador_eventos += 1
+    # Devuelve el identificador con tres dígitos
+    return f"evento_{contador_eventos:03d}"
+
+
+#Guarda la información del evento ocurrido dentro de un archivo de texto llamado "Eventos.txt".
+def guardar_evento(tipo_evento):
+
+    # Obtiene la fecha y hora actual 
+    fecha_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Genera un identificador para este evento
+    evento = generar_evento()
+
+    # Abre el archivo y agrega información sin borrar datos previos
+    with open("Eventos.txt", "a", encoding="utf-8") as archivo:
+
+        # Escribe la información del evento en una nueva línea
+        archivo.write(
+            f"{fecha_hora} | {tipo_evento} | {evento}\n"
+        )
+
+# Se ejecuta automáticamente cuando se presiona una tecla.
+def on_press(key):
+
+    try:
+        # Si es una tecla alfanumérica muestra el carácter
+        print(f"Tecla alfanumérica presionada: {key.char}")
+
+    except AttributeError:
+        # Si es una tecla especial 
+        print(f"Tecla especial presionada: {key}")
+
+    # Guarda el evento de tipo PRESS en el archivo
+    guardar_evento("PRESS")
+
+# Se ejecuta automáticamente cuando una tecla deja de estar presionada.
+def on_release(key):
+
+    # Muestra en consola la tecla liberada
+    print(f"Tecla liberada: {key}")
+
+    # Guarda el evento de tipo RELEASE en el archivo
+    guardar_evento("RELEASE")
+
+    # Si la tecla liberada es ESC finaliza el programa
+    if key == Key.esc:
+        return False
+
+# Listener mantiene activo el monitoreo del teclado y llama automáticamente a las funciones:
+with Listener(
+    on_press=on_press,
+    on_release=on_release
+) as listener:
+
+    # Mantiene el programa ejecutándose esperando eventos
+    listener.join()</code></pre>
+
+            </section>
+
+            <section class="seccion-actividad" id="conceptos" data-aos="fade-up">
+              <h2>Conceptos principales</h2>
+              <div class="rejilla rejilla-2">
+
+                <div class="artefacto">
+                  <i class="bi bi-keyboard" aria-hidden="true"></i>
+                  <div>
+                    <h4>Eventos del teclado</h4>
+                    <p>
+                      Son acciones detectadas cuando una tecla es presionada o liberada. Mediante Listener de pynput,
+                      el programa puede ejecutar automáticamente funciones asociadas a cada evento.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-database" aria-hidden="true"></i>
+                  <div>
+                    <h4>Persistencia de datos</h4>
+                    <p>
+                      Consiste en almacenar los eventos registrados en un archivo local para conservar la información incluso después
+                      de finalizar la ejecución del programa. En esta actividad los datos se guardan en Eventos.txt.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>
+                  Aprendí a detectar eventos del teclado en Python utilizando las clases Key y Listener de la librería pynput.
+                </li>
+                <li>
+                  Comprendí cómo almacenar información de manera persistente, agregando fecha, hora e identificadores únicos a cada evento registrado.
+                </li>
+              </ul>
+            </section>
+
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                Esta actividad me permitió comprender el manejo de eventos y funciones automáticas en Python, así como la importancia
+                de almacenar la información generada durante la ejecución de un programa. Además, aprendí a asociar cada evento con una
+                fecha, hora e identificador para mantener los registros organizados y facilitar su análisis.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad 
+                data-parcial="1" 
+                data-actividad="3" 
+                aria-label="Navegación entre actividades">
+            </nav>
+
+          </div>
+
+    <aside class="actividad-lateral">
+
+      <div class="ficha-lateral">
+        <h2>Datos de la actividad</h2>
+        <ul class="lista-datos">
+
+          <li>
+            <span class="etiqueta">Fecha</span>
+            <span class="valor">24/08/2026 - 23:59 horas</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Tecnologías</span>
+            <span class="valor">Python · pynput · datetime</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Entregable</span>
+            <span class="valor">Informe en forma de presentacion</span>
+          </li>
+
+        </ul>
+      </div>
+            <!-- =========================
+                 EDITAR: PDF DE LA ACTIVIDAD
+                 Guarda el archivo en:  assets/pdf/parcial1/actividad_1.pdf
+            ========================= -->
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial1/Act3.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>
