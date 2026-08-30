@@ -51,6 +51,13 @@ window.PORTAFOLIO = {
           archivo: "actividad_3.html",
           descripcion: "Esta actividad consiste en desarrollar y documentar un programa que registre eventos del teclado, almacenándolos en un archivo local con fecha y hora.",
           publicada: true
+        },
+        {
+          numero: 4,
+          titulo: "Una página demasiado convincente",
+          archivo: "actividad_4.html",
+          descripcion: "Esta actividad consiste en simular un ataque de phishing en un entorno controlado utilizando Social-Engineer Toolkit (SET), con el objetivo de analizar la captura de credenciales ficticias e identificar medidas para prevenir este tipo de amenazas.",
+          publicada: true
         }
       ]
     },
