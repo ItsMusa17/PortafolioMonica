@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Laboratorio – Título del laboratorio | Monica Lopez</title>
+  <meta name="description" content="Detalle del laboratorio: descripción, procedimiento y evidencias del recorrido en CNO IV – Seguridad Informática.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <!-- Iconos por CDN para la vista previa (en tu sitio ya los cargas en local) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+
+  <style>
+    .lab-shell{
+      --tinta:#17101f; --tinta2:#241635;
+      --oro:#d9b25c; --oro-suave:#f0d79a; --violeta:#9a6cff; --ambar:#ff7a59;
+      --texto:#ece6f5; --tenue:#b6a9cf;
+      --panel:rgba(40,28,58,.55); --linea:rgba(217,178,92,.28);
+      position:relative; color:var(--texto); font-family:"Nunito Sans",system-ui,sans-serif;
+      background:
+        radial-gradient(900px 500px at 12% -8%, rgba(154,108,255,.20), transparent 60%),
+        radial-gradient(800px 480px at 100% 0%, rgba(255,122,89,.12), transparent 55%),
+        linear-gradient(160deg,var(--tinta),var(--tinta2));
+      border:1px solid var(--linea); border-radius:22px;
+      padding:clamp(22px,4vw,44px); overflow:hidden; box-shadow:0 30px 70px rgba(10,6,20,.5);
+    }
+    .lab-shell *{box-sizing:border-box;}
+    .lab-shell>*{position:relative;z-index:1;}
+    .lab-shell h1,.lab-shell h2,.lab-shell h3,.lab-shell h4{font-family:"Fraunces",serif;line-height:1.15;margin:0;}
+
+    /* ---------- Cabecera del artículo ---------- */
+    .lab-rastro{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--tenue);margin-bottom:16px;}
+    .lab-rastro a{color:var(--oro);text-decoration:none;}
+    .lab-rastro i{font-size:10px;opacity:.6;}
+    .lab-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--oro);
+      border:1px solid var(--linea);border-radius:999px;padding:5px 13px;margin-bottom:14px;}
+    .lab-titulo{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(28px,4.6vw,46px);line-height:1.05;margin:0 0 12px;}
+    .lab-titulo em{font-style:italic;background:linear-gradient(90deg,var(--oro-suave),var(--violeta));
+      -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .lab-entradilla{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.3vw,23px);font-style:italic;
+      color:var(--tenue);max-width:62ch;margin:0 0 18px;}
+    .lab-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--tenue);padding-bottom:22px;
+      border-bottom:1px solid var(--linea);}
+    .lab-meta span{display:inline-flex;align-items:center;gap:7px;}
+    .lab-meta i{color:var(--oro);}
+
+    /* ---------- Layout 2 columnas ---------- */
+    .lab-grid{display:grid;grid-template-columns:1fr 300px;gap:34px;margin-top:26px;align-items:start;}
+    @media (max-width:900px){.lab-grid{grid-template-columns:1fr;}}
+
+    /* ---------- Columna principal (artículo) ---------- */
+    .lab-articulo>section{margin-bottom:34px;scroll-margin-top:90px;}
+    .lab-articulo h2{font-size:clamp(21px,2.8vw,28px);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+    .lab-articulo h2 .ic{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:9px;
+      background:rgba(217,178,92,.12);border:1px solid var(--linea);color:var(--oro);font-size:16px;}
+    .lab-articulo h3{font-size:18px;margin:18px 0 8px;color:var(--oro-suave);}
+    .lab-articulo p{line-height:1.75;color:#ded7ec;margin:0 0 14px;}
+    .lab-articulo ul,.lab-articulo ol{margin:0 0 14px;padding-left:20px;color:#ded7ec;line-height:1.7;}
+    .lab-articulo li{margin-bottom:6px;}
+    .lab-articulo .capitular::first-letter{font-family:"Fraunces",serif;font-size:3.1em;line-height:.8;
+      float:left;margin:6px 10px 0 0;color:var(--oro);}
+
+    /* Bloque de código / terminal */
+    .lab-code{background:#0c0a12;border:1px solid var(--linea);border-radius:12px;padding:14px 16px;
+      font-family:"Consolas","Courier New",monospace;font-size:13px;line-height:1.6;color:#cfc9dd;
+      overflow-x:auto;margin:0 0 16px;white-space:pre;}
+    .lab-code .c{color:#7bd88f;}   /* comando */
+    .lab-code .m{color:#8a83a6;}   /* comentario */
+
+    /* Cita / nota */
+    .lab-nota{margin:0 0 16px;padding:14px 16px;border-left:3px solid var(--violeta);border-radius:0 10px 10px 0;
+      background:rgba(154,108,255,.08);color:#e4ddf2;font-size:14.5px;line-height:1.6;}
+    .lab-nota b{color:var(--oro-suave);}
+
+    /* Figura / evidencia */
+    .lab-figura{margin:0 0 18px;border:1px solid var(--linea);border-radius:12px;overflow:hidden;background:rgba(12,8,18,.5);}
+    .lab-figura .ph{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:8px;color:var(--tenue);text-align:center;padding:16px;
+      background:radial-gradient(400px 220px at 50% 40%,rgba(154,108,255,.14),transparent 70%);}
+    .lab-figura .ph i{font-size:34px;color:var(--oro);}
+    .lab-figura img{display:block;width:100%;height:auto;}
+    .lab-figura figcaption{padding:9px 14px;font-size:12.5px;color:var(--tenue);border-top:1px solid var(--linea);}
+
+    /* ---------- Columna lateral (pegajosa) ---------- */
+    .lab-aside{position:sticky;top:24px;display:grid;gap:16px;}
+    @media (max-width:900px){.lab-aside{position:static;}}
+    .lab-card{background:var(--panel);border:1px solid var(--linea);border-radius:16px;padding:18px;backdrop-filter:blur(6px);}
+    .lab-card h4{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--oro-suave);margin-bottom:12px;
+      display:flex;align-items:center;gap:8px;}
+    .lab-ficha{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+    .lab-ficha li{display:grid;gap:2px;padding-bottom:11px;border-bottom:1px dashed rgba(217,178,92,.2);}
+    .lab-ficha li:last-child{border-bottom:0;padding-bottom:0;}
+    .lab-ficha .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tenue);font-weight:700;}
+    .lab-ficha .v{font-weight:600;color:var(--texto);font-size:14px;}
+
+    /* Índice */
+    .lab-indice{list-style:none;margin:0;padding:0;display:grid;gap:4px;}
+    .lab-indice a{display:block;padding:7px 11px;border-radius:8px;color:var(--tenue);text-decoration:none;
+      font-size:13.5px;border-left:2px solid transparent;transition:background .15s,color .15s,border-color .15s;}
+    .lab-indice a:hover{background:rgba(217,178,92,.08);color:var(--texto);}
+    .lab-indice a.activo{color:var(--oro-suave);border-left-color:var(--oro);background:rgba(217,178,92,.1);}
+
+    /* Botón descarga */
+    .lab-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;border-radius:11px;
+      font-weight:700;text-decoration:none;font-size:14px;color:#1c1226;
+      background:linear-gradient(90deg,var(--oro-suave),var(--oro));transition:filter .15s,transform .12s;}
+    .lab-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+    .lab-tags{display:flex;flex-wrap:wrap;gap:7px;}
+    .lab-tags span{font-size:11.5px;padding:5px 10px;border-radius:999px;background:rgba(154,108,255,.12);
+      border:1px solid rgba(154,108,255,.3);color:#d9ccff;}
+
+    /* Navegación entre labs */
+    .lab-navlabs{display:flex;justify-content:space-between;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--linea);}
+    .lab-navlabs a{display:inline-flex;align-items:center;gap:8px;color:var(--oro);text-decoration:none;font-weight:600;font-size:14px;}
+    .lab-navlabs a:hover{color:var(--oro-suave);}
+    .lab-navlabs .disabled{opacity:.35;pointer-events:none;}
+
+    @media (prefers-reduced-motion:reduce){.lab-btn,.lab-indice a{transition:none;}}
+  </style>
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <div class="contenedor">
+
+        <div class="lab-shell" data-aos="fade-up">
+
+          <!-- ---------- CABECERA ---------- -->
+          <header>
+            <nav class="lab-rastro" aria-label="Ruta">
+              <a href="../index.html">Inicio</a> <i class="bi bi-chevron-right"></i>
+              <a href="linetime.html">LineTime</a> <i class="bi bi-chevron-right"></i>
+              <span>Laboratorio 04</span>
+            </nav>
+
+            <span class="lab-eyebrow"><i class="bi bi-journal-code"></i> Laboratorio 04 · CNO IV</span>
+            <h1 class="lab-titulo">Una página <em>demasiado convincente</em></h1>
+            <p class="lab-entradilla">
+              Cómo funciona un ataque de phishing por dentro: monté una página falsa en un laboratorio aislado
+              y observé, paso a paso, cómo se capturan las credenciales de una víctima.
+            </p>
+            <div class="lab-meta">
+              <span><i class="bi bi-calendar3"></i> 31 / 08 / 2026</span>
+              <span><i class="bi bi-clock"></i> ~10 min de lectura</span>
+              <span><i class="bi bi-tools"></i> Kali Linux · SET</span>
+            </div>
+          </header>
+
+          <!-- ---------- CUERPO A DOS COLUMNAS ---------- -->
+          <div class="lab-grid">
+
+            <!-- COLUMNA PRINCIPAL: el artículo -->
+            <article class="lab-articulo">
+
+              <section id="introduccion">
+                <h2><span class="ic"><i class="bi bi-flag"></i></span> Introducción</h2>
+                <p class="capitular">
+                  En este laboratorio trabajé una simulación de ingeniería social usando Social-Engineer Toolkit (SET)
+                  y su módulo Credential Harvester. La idea era entender, desde el lado ofensivo, cómo una página que
+                  parece legítima puede robar credenciales, para después reconocer cómo defenderse. Aquí describo lo
+                  que hice, con mis capturas y observaciones.
+                </p>
+              </section>
+
+              <section id="objetivo">
+                <h2><span class="ic"><i class="bi bi-bullseye"></i></span> Objetivo</h2>
+                <p>
+                  Implementar y analizar, en un entorno controlado, la captura de credenciales ficticias mediante una
+                  página web falsa, identificando los indicadores de phishing y las medidas de seguridad que lo previenen.
+                </p>
+              </section>
+
+              <section id="procedimiento">
+                <h2><span class="ic"><i class="bi bi-list-ol"></i></span> Procedimiento</h2>
+                <p>Estos fueron los pasos principales que seguí en la máquina virtual de Kali:</p>
+
+                <h3>1. Preparación</h3>
+                <p>Configuré la red de la máquina virtual en modo aislado y localicé mi dirección IP.</p>
+                <pre class="lab-code"><span class="m"># ver la IP de la máquina</span>
+<span class="c">ip a</span></pre>
+
+                <h3>2. Ejecución del módulo</h3>
+                <p>Inicié SET y entré al módulo Credential Harvester para servir mi página ficticia.</p>
+                <div class="lab-nota"><b>Observación:</b> elegí la opción de importar mi propia página, ya que clonar sitios reales estaba prohibido en la práctica.</div>
+
+                <h3>3. Captura de credenciales</h3>
+                <p>Al enviar el formulario, los datos aparecieron en la terminal en texto plano. Aquí una evidencia:</p>
+                <figure class="lab-figura">
+                  <div class="ph"><i class="bi bi-image"></i><small>Reemplaza este bloque por tu captura (&lt;img src="..."&gt;)</small></div>
+                  <figcaption>Figura 1. Credenciales capturadas en la terminal de SET.</figcaption>
+                </figure>
+              </section>
+
+              <section id="evidencias">
+                <h2><span class="ic"><i class="bi bi-camera"></i></span> Evidencias</h2>
+                <p>Agrega aquí tus capturas usando la misma estructura de figura:</p>
+                <figure class="lab-figura">
+                  <div class="ph"><i class="bi bi-image"></i><small>Tu captura aquí</small></div>
+                  <figcaption>Figura 2. Descripción de la evidencia.</figcaption>
+                </figure>
+              </section>
+
+              <section id="conclusion">
+                <h2><span class="ic"><i class="bi bi-check2-circle"></i></span> Conclusión</h2>
+                <p>
+                  Este laboratorio me mostró lo fácil que es capturar credenciales cuando alguien confía solo en la
+                  apariencia de una página. La mejor defensa combina verificar la dirección, usar autenticación
+                  multifactor y desconfiar de mensajes urgentes.
+                </p>
+              </section>
+
+              <!-- Navegación entre laboratorios -->
+              <nav class="lab-navlabs" aria-label="Otros laboratorios">
+                <a href="actividad_3.html"><i class="bi bi-arrow-left"></i> Lab anterior</a>
+                <a href="actividad_5.html">Lab siguiente <i class="bi bi-arrow-right"></i></a>
+              </nav>
+            </article>
+
+            <!-- COLUMNA LATERAL: ficha + índice + descargas -->
+            <aside class="lab-aside">
+
+              <div class="lab-card">
+                <h4><i class="bi bi-info-circle"></i> Ficha del laboratorio</h4>
+                <ul class="lab-ficha">
+                  <li><span class="k">Parcial</span><span class="v">1 · Actividad 4</span></li>
+                  <li><span class="k">Tema</span><span class="v">Phishing / Ingeniería social</span></li>
+                  <li><span class="k">Herramientas</span><span class="v">Kali Linux · SET · VirtualBox</span></li>
+                  <li><span class="k">Entregable</span><span class="v">Informe (PDF)</span></li>
+                </ul>
+              </div>
+
+              <div class="lab-card">
+                <h4><i class="bi bi-list-nested"></i> En esta página</h4>
+                <ul class="lab-indice" data-indice>
+                  <li><a href="#introduccion">Introducción</a></li>
+                  <li><a href="#objetivo">Objetivo</a></li>
+                  <li><a href="#procedimiento">Procedimiento</a></li>
+                  <li><a href="#evidencias">Evidencias</a></li>
+                  <li><a href="#video">Video</a></li>
+                  <li><a href="#conclusion">Conclusión</a></li>
+                </ul>
+              </div>
+
+              <div class="lab-card">
+                <h4><i class="bi bi-download"></i> Descargas</h4>
+                <a class="lab-btn" href="../assets/pdf/parcial1/Act4.pdf" download>
+                  <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                </a>
+                <div class="lab-tags" style="margin-top:14px;">
+                  <span>#phishing</span><span>#SET</span><span>#kali</span>
+                </div>
+              </div>
+
+            </aside>
+
+          </div>
+
+        </div><!-- /.lab-shell -->
+
+      </div>
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+  <!-- Resalta en el índice la sección visible al hacer scroll -->
+  <script>
+  (function(){
+    var enlaces = document.querySelectorAll('[data-indice] a');
+    if(!enlaces.length || !('IntersectionObserver' in window)) return;
+    var mapa = {};
+    enlaces.forEach(function(a){ mapa[a.getAttribute('href').slice(1)] = a; });
+
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if(e.isIntersecting){
+          enlaces.forEach(function(a){ a.classList.remove('activo'); });
+          var a = mapa[e.target.id];
+          if(a) a.classList.add('activo');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+
+    document.querySelectorAll('.lab-articulo section[id]').forEach(function(s){ obs.observe(s); });
+  })();
+  </script>
+
+</body>
+
+</html>
