@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Actividad 5 – El arte del engaño | Monica Lopez</title>
+  <meta name="description" content="Actividad 5 del Parcial 1 de CNO IV – Seguridad Informática: análisis de un caso de ingeniería social a partir de un video, con cuestionario como evidencia.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+
+  <!-- =========================================================
+       Estilos propios de esta actividad (video + cuestionario).
+       Todo va bajo .video-actividad y .cuestionario para no chocar
+       con grimorio.css.
+  ========================================================= -->
+  <style>
+    /* --- Video responsivo 16:9 --- */
+    .video-actividad{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+      border:1px solid rgba(120,90,180,.25);box-shadow:0 10px 30px rgba(40,20,70,.18);background:#000;}
+    .video-actividad iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+    .video-pie{margin-top:10px;font-size:14px;opacity:.8;font-style:italic;}
+  </style>
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 1 · Actividad 5</span>
+          <h1>El arte del engaño</h1>
+          <p class="subtitulo">
+            Análisis de un caso real de ingeniería social a partir de un video: cómo un grupo logró robar alrededor de
+            240 millones de dólares en criptomonedas sin un hackeo técnico, únicamente manipulando la confianza de la víctima.
+          </p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial1.html">Parcial 1</a></li>
+              <li><span aria-current="page">Actividad 5</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                En esta actividad se analiza un video que relata el caso real de Malone Lam y su grupo, responsables de uno de los
+                mayores robos de criptomonedas a una persona en la historia. Lo llamativo es que no emplearon un hackeo técnico:
+                todo se logró a través del engaño. Es un ejemplo claro del “arte del engaño”, donde la ingeniería social se convierte
+                en la vía más efectiva para vulnerar la seguridad de una persona.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                Analizar, a partir del video, cómo la ingeniería social permite obtener información sensible manipulando la confianza
+                de las personas, identificar las técnicas de engaño utilizadas en el caso y reconocer las medidas que ayudan a
+                prevenir este tipo de ataques. La evidencia de la actividad es un cuestionario sobre el contenido del video.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="video" data-aos="fade-up">
+              <h2>El caso: análisis del video</h2>
+              <p>
+                El siguiente video narra cómo el grupo se hizo pasar por personal de soporte de plataformas conocidas para ganarse
+                la confianza de la víctima y hacerse con el control de sus cuentas.
+              </p>
+
+              <div class="video-actividad">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/AzGj5q5Fm80?start=31"
+                  title="El arte del engaño — análisis del caso"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+              <p class="video-pie">Video: “Roba 240 millones y los gasta de fiesta (sale mal)”.</p>
+            </section>
+
+            <section class="seccion-actividad" id="conceptos" data-aos="fade-up">
+              <h2>Conceptos principales</h2>
+              <div class="rejilla rejilla-2">
+
+                <div class="artefacto">
+                  <i class="bi bi-people" aria-hidden="true"></i>
+                  <div>
+                    <h4>Ingeniería social</h4>
+                    <p>
+                      Consiste en manipular a las personas para que entreguen información o accesos, aprovechando la confianza
+                      en lugar de explotar fallos técnicos. En el caso, fue la clave de todo el robo.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-person-badge" aria-hidden="true"></i>
+                  <div>
+                    <h4>Suplantación de identidad</h4>
+                    <p>
+                      Los atacantes se hicieron pasar por soporte técnico de empresas conocidas para parecer legítimos y
+                      convencer a la víctima de que su cuenta estaba en peligro.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-display" aria-hidden="true"></i>
+                  <div>
+                    <h4>Acceso remoto</h4>
+                    <p>
+                      Convencieron a la víctima de instalar un programa de escritorio remoto, lo que les dio control de su
+                      equipo en tiempo real y acceso a sus archivos y claves.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-shield-exclamation" aria-hidden="true"></i>
+                  <div>
+                    <h4>El factor humano</h4>
+                    <p>
+                      El ataque no necesitó malware ni exploits: bastó una conversación convincente. El eslabón más débil de
+                      la seguridad sigue siendo la persona.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>Comprendí que la ingeniería social puede ser más efectiva que un ataque técnico, porque explota la confianza de las personas.</li>
+                <li>Identifiqué las técnicas de engaño del caso: suplantación de soporte técnico, sensación de urgencia y acceso remoto.</li>
+                <li>Reconocí la importancia de verificar la identidad de quien nos contacta y de nunca compartir claves ni frases de acceso.</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                Este caso demuestra que, por muy avanzada que sea la tecnología, el punto más vulnerable de la seguridad sigue
+                siendo el ser humano. El “arte del engaño” no depende de romper sistemas, sino de ganarse la confianza de la
+                víctima. Por eso, la mejor defensa combina una desconfianza sana, la verificación por canales oficiales y la
+                educación constante sobre estas amenazas.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad
+                data-parcial="1"
+                data-actividad="5"
+                aria-label="Navegación entre actividades">
+            </nav>
+
+          </div>
+
+    <aside class="actividad-lateral">
+
+      <div class="ficha-lateral">
+        <h2>Datos de la actividad</h2>
+        <ul class="lista-datos">
+
+          <li>
+            <span class="etiqueta">Fecha</span>
+            <span class="valor">31/08/2026</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Tema</span>
+            <span class="valor">Ingeniería social · Análisis de caso</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Entregable</span>
+            <span class="valor">Cuestionario</span>
+          </li>
+
+        </ul>
+      </div>
+
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial1/Act5.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+  <!-- Lógica del cuestionario (autocontenida) -->
+  <script>
+  (function(){
+    document.querySelectorAll('[data-quiz]').forEach(function(quiz){
+      var preguntas = quiz.querySelectorAll('.q');
+      var btnOk = quiz.querySelector('[data-comprobar]');
+      var btnReset = quiz.querySelector('[data-reiniciar]');
+      var res = quiz.querySelector('[data-resultado]');
+      var barra = quiz.querySelector('[data-barra]');
+      var barraFill = barra.querySelector('span');
+
+      function comprobar(){
+        var correctas = 0;
+        preguntas.forEach(function(q){
+          var labels = q.querySelectorAll('.q-ops label');
+          var exp = q.querySelector('.q-exp');
+          var elegida = q.querySelector('input:checked');
+          labels.forEach(function(l){ l.classList.remove('ok','bad'); });
+
+          labels.forEach(function(l){
+            var input = l.querySelector('input');
+            if(input.hasAttribute('data-ok')) l.classList.add('ok');
+          });
+          if(elegida){
+            if(elegida.hasAttribute('data-ok')) correctas++;
+            else elegida.closest('label').classList.add('bad');
+          }
+          if(exp) exp.hidden = false;
+        });
+
+        var total = preguntas.length;
+        res.hidden = false;
+        res.textContent = 'Obtuviste ' + correctas + ' de ' + total + ' respuestas correctas.';
+        barra.hidden = false;
+        barraFill.style.width = Math.round((correctas/total)*100) + '%';
+        res.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+
+      function reiniciar(){
+        preguntas.forEach(function(q){
+          q.querySelectorAll('.q-ops label').forEach(function(l){ l.classList.remove('ok','bad'); });
+          q.querySelectorAll('input').forEach(function(i){ i.checked = false; });
+          var exp = q.querySelector('.q-exp'); if(exp) exp.hidden = true;
+        });
+        res.hidden = true; res.textContent = '';
+        barra.hidden = true; barraFill.style.width = '0';
+      }
+
+      btnOk.addEventListener('click', comprobar);
+      btnReset.addEventListener('click', reiniciar);
+    });
+  })();
+  </script>
+
+</body>
+
+</html>

@@ -132,7 +132,6 @@
               (esPaginaActual(parcial.pagina) ? ' aria-current="page"' : "") + ">Presentación del parcial</a>" +
             "</li>";
 
-
       if (parcial.actividades.length === 0) {
         html += '<li><span class="indice-subenlace pendiente">Sin actividades aún</span></li>';
       } else {
@@ -149,25 +148,17 @@
           }
         });
       }
-      
-      var destinoProyecto = "proyecto" + parcial.numero + ".html";
-      html +=
-        "<li>" +
-          '<a class="indice-subenlace' + (esPaginaActual(destinoProyecto) ? " activo" : "") + '" href="' + ruta(destinoProyecto) + '"' +
-          (esPaginaActual(destinoProyecto) ? ' aria-current="page"' : "") + ">Proyecto</a>" +
-        "</li>";
-      
 
       html += "</ul></li>";
       void i;
     });
 
-        // Salon de la fama
+        // Sobre mí
     html +=
       "<li>" +
         '<a class="indice-enlace' + (esPaginaActual("linetime.html") ? " activo" : "") + '" href="' + ruta("linetime.html") + '"' +
         (esPaginaActual("linetime.html") ? ' aria-current="page"' : "") + ">" +
-          '<i class="bi bi-award" aria-hidden="true"></i><span>Salon de la fama</span>' +
+          '<i class="bi bi-feather" aria-hidden="true"></i><span>Salon de la fama</span>' +
         "</a>" +
       "</li>";
 

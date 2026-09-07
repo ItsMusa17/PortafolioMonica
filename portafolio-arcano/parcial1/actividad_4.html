@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Actividad 4 – Una página demasiado convincente | Monica Lopez</title>
+  <meta name="description" content="Actividad 1 del Parcial 1 de CNO IV – Seguridad Informática: análisis de un ciberataque.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 1 · Actividad 4</span>
+          <h1>Una página demasiado convincente</h1>
+          <p class="subtitulo">
+            Simulación de un ataque de phishing en un entorno controlado utilizando Social-Engineer Toolkit (SET), con el objetivo de analizar la captura de credenciales ficticias e identificar medidas para prevenir este tipo de amenazas.
+          </p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial1.html">Parcial 1</a></li>
+              <li><span aria-current="page">Actividad 4</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                En esta actividad se realizó una simulación controlada utilizando Social-Engineer Toolkit (SET) y el módulo Credential Harvester, con el fin 
+                de observar cómo funciona este tipo de ataque y reconocer las señales que pueden ayudar a identificarlo y prevenirlo.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                El objetivo de esta práctica fue implementar y analizar, dentro de un entorno de laboratorio controlado, una simulación de ingeniería 
+                social utilizando Social-Engineer Toolkit (SET) y su módulo Credential Harvester Attack Method.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="simulacion" data-aos="fade-up">
+              <h2>Simulación: cómo se capturan las credenciales</h2>
+              <p>
+                Cuando la víctima escribe su usuario y contraseña en la página falsa, el navegador envía esos
+                datos mediante una petición <strong>HTTP POST</strong> al servidor del atacante (SET), que los
+                registra en texto plano. Prueba a escribir cualquier dato de ejemplo y pulsa
+                <em>Iniciar sesión</em> para ver el flujo paso a paso.
+              </p>
+
+              <div class="sim-harvester" data-sim>
+                <p class="sim-aviso">
+                  <i class="bi bi-shield-exclamation" aria-hidden="true"></i>
+                  Simulación educativa: al enviar el formulario, los datos <strong>no salen de tu navegador</strong>;
+                  solo se muestran aquí para explicar el mecanismo.
+                </p>
+
+                <ol class="sim-flujo">
+                  <li data-step="1"><span>1</span> Navegador</li>
+                  <li data-step="2"><span>2</span> Petición POST</li>
+                  <li data-step="3"><span>3</span> Servidor atacante</li>
+                  <li data-step="4"><span>4</span> Registro</li>
+                </ol>
+
+                <div class="sim-paneles">
+                  <!-- Panel de la víctima -->
+                  <div class="sim-panel sim-victima">
+                    <div class="sim-cabecera"><i class="bi bi-person" aria-hidden="true"></i> Lo que ve la víctima</div>
+                    <div class="sim-barra"><i class="bi bi-shield-slash" aria-hidden="true"></i> No seguro · http://10.0.2.15</div>
+                    <div class="sim-login">
+                      <div class="sim-marca">Nexo<span>Play</span></div>
+                      <p class="sim-expira">Tu sesión ha expirado. Inicia sesión para continuar.</p>
+                      <label>Usuario o correo
+                        <input type="text" data-user placeholder="tu_usuario" autocomplete="off">
+                      </label>
+                      <label>Contraseña
+                        <input type="password" data-pass placeholder="••••••••" autocomplete="off">
+                      </label>
+                      <button type="button" data-enviar>Iniciar sesión</button>
+                    </div>
+                  </div>
+
+                  <!-- Panel del atacante -->
+                  <div class="sim-panel sim-atacante">
+                    <div class="sim-cabecera"><i class="bi bi-terminal" aria-hidden="true"></i> Lo que recibe el atacante · SET</div>
+                    <pre class="sim-terminal" data-terminal>[*] Credential Harvester is running on port 80
+            [*] Esperando datos del formulario…</pre>
+                  </div>
+                </div>
+
+                <p class="sim-explica" data-explica hidden></p>
+
+                <button type="button" class="sim-reset" data-reset>
+                  <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Reiniciar simulación
+                </button>
+              </div>
+            </section>
+
+            <style>
+              /* --- Estilos de la simulación (todo bajo .sim-harvester para no chocar con tu CSS) --- */
+              .sim-harvester{--v:#8b5cff;--c:#25e0d8;--ok:#63f0a0;--bad:#ff5c7a;
+                margin-top:18px;border:1px solid #e0d8f0;border-radius:16px;padding:18px;background:#fbfaff;}
+              .sim-harvester *{box-sizing:border-box;}
+              .sim-aviso{display:flex;gap:8px;align-items:flex-start;margin:0 0 16px;padding:10px 12px;
+                background:rgba(242,181,68,.14);border:1px solid rgba(242,181,68,.5);border-radius:10px;
+                font-size:13.5px;color:#7a5a10;line-height:1.4;}
+              .sim-aviso i{margin-top:2px;}
+
+              .sim-flujo{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0 0 16px;}
+              .sim-flujo li{display:flex;align-items:center;gap:7px;flex:1;min-width:140px;
+                padding:8px 10px;border-radius:9px;background:#f0ecf9;color:#6b6390;font-size:13px;font-weight:600;
+                transition:background .25s,color .25s,transform .25s;}
+              .sim-flujo li span{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;
+                background:#d8cef0;color:#5a4d8a;font-size:12px;flex:none;}
+              .sim-flujo li.activo{background:var(--v);color:#fff;transform:translateY(-2px);}
+              .sim-flujo li.activo span{background:#fff;color:var(--v);}
+
+              .sim-paneles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+              @media (max-width:640px){.sim-paneles{grid-template-columns:1fr;}}
+              .sim-panel{border-radius:12px;overflow:hidden;border:1px solid #2a2440;}
+              .sim-cabecera{display:flex;align-items:center;gap:7px;padding:9px 12px;font-size:12.5px;font-weight:700;
+                letter-spacing:.3px;color:#eae6ff;background:#221a3a;}
+
+              /* Panel víctima */
+              .sim-victima .sim-barra{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:11.5px;
+                color:#ffb4b4;background:#12101f;border-bottom:1px solid #2a2440;}
+              .sim-login{padding:16px;background:linear-gradient(160deg,#140a24,#0d0718);}
+              .sim-marca{font-weight:800;font-size:20px;color:#eae6ff;text-align:center;margin-bottom:6px;}
+              .sim-marca span{background:linear-gradient(90deg,var(--c),var(--v));-webkit-background-clip:text;
+                background-clip:text;color:transparent;}
+              .sim-expira{margin:0 0 14px;padding:8px 10px;font-size:11.5px;line-height:1.4;color:#ffd0e6;
+                background:rgba(255,62,165,.1);border:1px solid rgba(255,62,165,.32);border-radius:8px;}
+              .sim-login label{display:block;font-size:11.5px;color:#9a92c4;margin-bottom:10px;font-weight:600;}
+              .sim-login input{width:100%;margin-top:5px;padding:9px 11px;border-radius:8px;font-size:13.5px;
+                color:#eae6ff;background:rgba(10,7,20,.6);border:1px solid rgba(140,110,255,.25);}
+              .sim-login input:focus{outline:none;border-color:var(--v);box-shadow:0 0 0 3px rgba(139,92,255,.2);}
+              .sim-login input::placeholder{color:#6a6390;}
+              .sim-login button[data-enviar]{width:100%;margin-top:4px;padding:11px;border:none;border-radius:8px;
+                cursor:pointer;font-weight:700;font-size:13.5px;color:#0b0716;
+                background:linear-gradient(90deg,var(--c),var(--v));transition:filter .15s;}
+              .sim-login button[data-enviar]:hover{filter:brightness(1.08);}
+
+              /* Panel atacante */
+              .sim-atacante .sim-terminal{margin:0;padding:14px;min-height:210px;background:#0a0a0f;color:#c9c9d6;
+                font-family:"Consolas","Courier New",monospace;font-size:12.5px;line-height:1.7;white-space:pre-wrap;
+                word-break:break-word;}
+              .sim-terminal .hit{color:var(--bad);font-weight:700;}
+              .sim-terminal .ok{color:var(--ok);}
+              .sim-terminal .cap{color:#ffe08a;}
+
+              .sim-explica{margin:14px 0 0;padding:11px 13px;border-radius:10px;font-size:13.5px;line-height:1.5;
+                color:#2a2440;background:#efe9fb;border:1px solid #ddd0f5;}
+              .sim-reset{margin-top:14px;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;
+                border:1px solid #d0c5ef;border-radius:9px;background:#fff;color:#5a4d8a;font-size:13px;
+                font-weight:600;cursor:pointer;transition:background .15s;}
+              .sim-reset:hover{background:#f3eefc;}
+
+              @media (prefers-reduced-motion:reduce){
+                .sim-flujo li{transition:none;}
+              }
+            </style>
+
+            <script>
+            (function(){
+              document.querySelectorAll('[data-sim]').forEach(function(sim){
+                var userIn  = sim.querySelector('[data-user]');
+                var passIn  = sim.querySelector('[data-pass]');
+                var enviar  = sim.querySelector('[data-enviar]');
+                var reset   = sim.querySelector('[data-reset]');
+                var term    = sim.querySelector('[data-terminal]');
+                var explica = sim.querySelector('[data-explica]');
+                var pasos   = sim.querySelectorAll('.sim-flujo li');
+                var reposo  = '[*] Credential Harvester is running on port 80\n[*] Esperando datos del formulario…';
+                var reduce  = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+                var animando = false;
+
+                function esperar(ms){ return new Promise(function(r){ setTimeout(r, reduce ? 0 : ms); }); }
+                function limpiarPasos(){ pasos.forEach(function(p){ p.classList.remove('activo'); }); }
+
+                function reiniciar(){
+                  limpiarPasos();
+                  term.textContent = reposo;
+                  explica.hidden = true;
+                  explica.textContent = '';
+                }
+
+                async function capturar(){
+                  if(animando) return;
+                  animando = true;
+
+                  // Valores de ejemplo si los campos están vacíos (nada de datos reales)
+                  var u = (userIn.value || 'UsuarioPrueba').trim();
+                  var p = (passIn.value || 'Prueba1234');
+                  userIn.value = u; passIn.value = p;
+
+                  reiniciar();
+                  var fecha = new Date().toLocaleString('es-MX');
+
+                  // 1..4: se van encendiendo los pasos del flujo
+                  for(var i=0;i<pasos.length;i++){
+                    pasos[i].classList.add('activo');
+                    await esperar(340);
+                  }
+
+                  // La terminal se va llenando como en SET real
+                  var lineas = [
+                    {t:'10.0.2.15 - - ['+fecha+'] "POST / HTTP/1.1" 200 -'},
+                    {t:'[*] WE GOT A HIT! Printing the output:', cls:'hit'},
+                    {t:'POSSIBLE USERNAME FIELD FOUND: username='+u, cls:'cap'},
+                    {t:'POSSIBLE PASSWORD FIELD FOUND: password='+p, cls:'cap'},
+                    {t:'PARAM: remember=on'},
+                    {t:'[*] WHEN YOU\u2019RE FINISHED, HIT CONTROL-C TO GENERATE A REPORT.', cls:'ok'}
+                  ];
+                  term.textContent = '';
+                  for(var j=0;j<lineas.length;j++){
+                    var span = document.createElement('span');
+                    if(lineas[j].cls) span.className = lineas[j].cls;
+                    span.textContent = lineas[j].t + '\n';
+                    term.appendChild(span);
+                    await esperar(230);
+                  }
+
+                  explica.textContent = 'La contraseña viajó por HTTP POST en texto plano y quedó registrada tal cual: el usuario nunca se autenticó de verdad, sus credenciales ya están en poder del atacante.';
+                  explica.hidden = false;
+                  animando = false;
+                }
+
+                enviar.addEventListener('click', capturar);
+                reset.addEventListener('click', function(){ if(!animando) reiniciar(); });
+              });
+            })();
+            </script>
+
+            <section class="seccion-actividad" id="conceptos" data-aos="fade-up">
+              <h2>Conceptos principales</h2>
+              <div class="rejilla rejilla-2">
+
+                <div class="artefacto">
+                  <i class="bi bi-keyboard" aria-hidden="true"></i>
+                  <div>
+                    <h4>Phishing</h4>
+                    <p>
+                      Técnica de ingeniería social que busca engañar a una persona para que proporcione información sensible, como usuarios, contraseñas o datos personales.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-database" aria-hidden="true"></i>
+                  <div>
+                    <h4>Social-Engineer Toolkit (SET)</h4>
+                    <p>
+                      Herramienta utilizada para realizar simulaciones y pruebas relacionadas con ingeniería social dentro de entornos controlados.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-code-slash" aria-hidden="true"></i>
+                  <div>
+                    <h4>Credential Harvester</h4>
+                    <p>
+                      Módulo que permite observar cómo los datos introducidos en un formulario pueden ser recibidos y registrados por un servidor.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="artefacto">
+                  <i class="bi bi-file-code" aria-hidden="true"></i>
+                  <div>
+                    <h4>Entorno controlado</h4>
+                    <p>
+                      Ambiente de laboratorio donde se realizan pruebas sin afectar sistemas, cuentas o usuarios reales.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>
+                  Comprensión del funcionamiento básico de un ataque de phishing.
+                </li>
+                <li>
+                  Identificación de las principales características de una página web fraudulenta.
+                </li>
+                <li>
+                  Uso de Social-Engineer Toolkit (SET) dentro de un entorno controlado.
+                </li>
+                <li>
+                  Conocimiento del funcionamiento del módulo Credential Harvester.
+                </li>
+                <li>
+                  Reconocimiento de los riesgos asociados al robo de credenciales.
+                </li>
+              </ul>
+            </section>
+
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                Esta actividad permitió comprender de manera práctica cómo funciona un ataque de phishing y cómo una página aparentemente legítima 
+                puede utilizarse para obtener información sensible. Mediante el uso de Social-Engineer Toolkit y Credential Harvester en un ambiente 
+                controlado, fue posible observar el proceso de captura de credenciales ficticias y analizar los riesgos que representa este tipo de amenaza.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad 
+                data-parcial="1" 
+                data-actividad="4" 
+                aria-label="Navegación entre actividades">
+            </nav>
+
+          </div>
+
+    <aside class="actividad-lateral">
+
+      <div class="ficha-lateral">
+        <h2>Datos de la actividad</h2>
+        <ul class="lista-datos">
+
+          <li>
+            <span class="etiqueta">Fecha</span>
+            <span class="valor">31/08/2026 - 07:00 horas</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Tecnologías</span>
+            <span class="valor">Kali Linux · Oracle VirtualBox · Social-Engineer Toolkit (SET)</span>
+          </li>
+
+          <li>
+            <span class="etiqueta">Entregable</span>
+            <span class="valor">Informe de la actividad</span>
+          </li>
+
+        </ul>
+      </div>
+
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial1/Act4.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>
