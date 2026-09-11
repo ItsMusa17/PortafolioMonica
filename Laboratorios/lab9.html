@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio 09 – File Path Traversal | Monica Lopez</title>
+  <meta name="description" content="Laboratorio 9 de CNO IV – Programación WAP: File Path Traversal en la Web Security Academy de PortSwigger.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+
+  <style>
+    .lab-shell{
+      --tinta:#17101f; --tinta2:#241635;
+      --oro:#d9b25c; --oro-suave:#f0d79a; --violeta:#9a6cff; --ambar:#ff7a59;
+      --texto:#ece6f5; --tenue:#b6a9cf;
+      --panel:rgba(40,28,58,.55); --linea:rgba(217,178,92,.28);
+      position:relative; color:var(--texto); font-family:"Nunito Sans",system-ui,sans-serif;
+      background:
+        radial-gradient(900px 500px at 12% -8%, rgba(154,108,255,.20), transparent 60%),
+        radial-gradient(800px 480px at 100% 0%, rgba(255,122,89,.12), transparent 55%),
+        linear-gradient(160deg,var(--tinta),var(--tinta2));
+      border:1px solid var(--linea); border-radius:22px;
+      padding:clamp(22px,4vw,44px); overflow:hidden; box-shadow:0 30px 70px rgba(10,6,20,.5);
+    }
+    .lab-shell *{box-sizing:border-box;}
+    .lab-shell>*{position:relative;z-index:1;}
+    .lab-shell h1,.lab-shell h2,.lab-shell h3,.lab-shell h4{font-family:"Fraunces",serif;line-height:1.15;margin:0;}
+
+    /* La página ocupa todo el ancho y tapa el fondo decorativo (los "rojos") */
+    .lab-page .contenedor{max-width:none; padding-left:clamp(8px,1.6vw,20px); padding-right:clamp(8px,1.6vw,20px);}
+    .lab-page .fondo-magico::before,
+    .lab-page .fondo-magico::after{display:none;}
+    /* el contenido interno se queda a un ancho cómodo y centrado */
+    .lab-shell>header, .lab-shell>.lab-grid{max-width:1180px; margin-left:auto; margin-right:auto;}
+
+    /* ---------- Cabecera del artículo ---------- */
+    .lab-rastro{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--tenue);margin-bottom:16px;}
+    .lab-rastro a{color:var(--oro);text-decoration:none;}
+    .lab-rastro i{font-size:10px;opacity:.6;}
+    .lab-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--oro);
+      border:1px solid var(--linea);border-radius:999px;padding:5px 13px;margin-bottom:14px;}
+    .lab-titulo{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(28px,4.6vw,46px);line-height:1.05;margin:0 0 12px;}
+    .lab-titulo em{font-style:italic;background:linear-gradient(90deg,var(--oro-suave),var(--violeta));
+      -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .lab-entradilla{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.3vw,23px);font-style:italic;
+      color:var(--tenue);max-width:62ch;margin:0 0 18px;}
+    .lab-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--tenue);padding-bottom:22px;
+      border-bottom:1px solid var(--linea);}
+    .lab-meta span{display:inline-flex;align-items:center;gap:7px;}
+    .lab-meta i{color:var(--oro);}
+
+    /* ---------- Layout 2 columnas ---------- */
+    .lab-grid{display:grid;grid-template-columns:1fr 300px;gap:34px;margin-top:26px;align-items:start;}
+    @media (max-width:900px){.lab-grid{grid-template-columns:1fr;}}
+
+    /* ---------- Columna principal (artículo) ---------- */
+    .lab-articulo>section{margin-bottom:34px;scroll-margin-top:90px;}
+    .lab-articulo h2{font-size:clamp(21px,2.8vw,28px);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+    .lab-articulo h2 .ic{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:9px;
+      background:rgba(217,178,92,.12);border:1px solid var(--linea);color:var(--oro);font-size:16px;}
+    .lab-articulo h3{font-size:18px;margin:18px 0 8px;color:var(--oro-suave);}
+    .lab-articulo p{line-height:1.75;color:#ded7ec;margin:0 0 14px;}
+    .lab-articulo ul,.lab-articulo ol{margin:0 0 14px;padding-left:20px;color:#ded7ec;line-height:1.7;}
+    .lab-articulo li{margin-bottom:6px;}
+    .lab-articulo .capitular::first-letter{font-family:"Fraunces",serif;font-size:3.1em;line-height:.8;
+      float:left;margin:6px 10px 0 0;color:var(--oro);}
+
+    /* Enlace del laboratorio (URL) */
+    .lab-url{display:flex;align-items:center;gap:14px;text-decoration:none;
+      padding:16px 18px;border-radius:14px;border:1px solid var(--oro);
+      background:linear-gradient(120deg,rgba(217,178,92,.12),rgba(154,108,255,.10));
+      color:var(--texto);transition:filter .15s,transform .12s;}
+    .lab-url:hover{filter:brightness(1.08);transform:translateY(-1px);}
+    .lab-url .ico-url{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:11px;
+      background:rgba(23,16,31,.55);border:1px solid var(--linea);color:var(--oro);font-size:22px;}
+    .lab-url .txt{display:flex;flex-direction:column;line-height:1.3;flex:1;min-width:0;}
+    .lab-url .txt b{font-size:15px;color:var(--oro-suave);}
+    .lab-url .txt small{font-size:12.5px;color:var(--tenue);word-break:break-all;}
+    .lab-url .flecha{color:var(--oro);font-size:18px;flex:none;}
+
+    /* Payload / dato en línea (no es una sección de código) */
+    .lab-payload{display:inline-block;font-family:"Consolas","Courier New",monospace;font-size:14px;
+      color:#ffe08a;background:#0c0a12;border:1px solid var(--linea);border-radius:8px;padding:6px 12px;margin:2px 0 12px;}
+
+    /* Cita / nota */
+    .lab-nota{margin:0 0 16px;padding:14px 16px;border-left:3px solid var(--violeta);border-radius:0 10px 10px 0;
+      background:rgba(154,108,255,.08);color:#e4ddf2;font-size:14.5px;line-height:1.6;}
+    .lab-nota b{color:var(--oro-suave);}
+
+    /* Figura / evidencia (imagen JPG) */
+    .lab-figura{margin:0 0 18px;border:1px solid var(--linea);border-radius:12px;overflow:hidden;background:rgba(12,8,18,.5);}
+    .lab-figura img{display:block;width:100%;height:auto;}
+    .lab-figura .ph{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:8px;color:var(--tenue);text-align:center;padding:16px;
+      background:radial-gradient(400px 220px at 50% 40%,rgba(154,108,255,.14),transparent 70%);}
+    .lab-figura .ph i{font-size:34px;color:var(--oro);}
+    .lab-figura figcaption{padding:9px 14px;font-size:12.5px;color:var(--tenue);border-top:1px solid var(--linea);}
+
+    /* ---------- Columna lateral (pegajosa) ---------- */
+    .lab-aside{position:sticky;top:24px;display:grid;gap:16px;}
+    @media (max-width:900px){.lab-aside{position:static;}}
+    .lab-card{background:var(--panel);border:1px solid var(--linea);border-radius:16px;padding:18px;backdrop-filter:blur(6px);}
+    .lab-card h4{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--oro-suave);margin-bottom:12px;
+      display:flex;align-items:center;gap:8px;}
+    .lab-ficha{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+    .lab-ficha li{display:grid;gap:2px;padding-bottom:11px;border-bottom:1px dashed rgba(217,178,92,.2);}
+    .lab-ficha li:last-child{border-bottom:0;padding-bottom:0;}
+    .lab-ficha .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tenue);font-weight:700;}
+    .lab-ficha .v{font-weight:600;color:var(--texto);font-size:14px;}
+
+    /* Índice */
+    .lab-indice{list-style:none;margin:0;padding:0;display:grid;gap:4px;}
+    .lab-indice a{display:block;padding:7px 11px;border-radius:8px;color:var(--tenue);text-decoration:none;
+      font-size:13.5px;border-left:2px solid transparent;transition:background .15s,color .15s,border-color .15s;}
+    .lab-indice a:hover{background:rgba(217,178,92,.08);color:var(--texto);}
+    .lab-indice a.activo{color:var(--oro-suave);border-left-color:var(--oro);background:rgba(217,178,92,.1);}
+
+    /* Botón descarga */
+    .lab-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;border-radius:11px;
+      font-weight:700;text-decoration:none;font-size:14px;color:#1c1226;
+      background:linear-gradient(90deg,var(--oro-suave),var(--oro));transition:filter .15s,transform .12s;}
+    .lab-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+    .lab-tags{display:flex;flex-wrap:wrap;gap:7px;}
+    .lab-tags span{font-size:11.5px;padding:5px 10px;border-radius:999px;background:rgba(154,108,255,.12);
+      border:1px solid rgba(154,108,255,.3);color:#d9ccff;}
+
+    /* Navegación entre labs */
+    .lab-navlabs{display:flex;justify-content:space-between;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--linea);}
+    .lab-navlabs a{display:inline-flex;align-items:center;gap:8px;color:var(--oro);text-decoration:none;font-weight:600;font-size:14px;}
+    .lab-navlabs a:hover{color:var(--oro-suave);}
+    .lab-navlabs .disabled{opacity:.35;pointer-events:none;}
+
+    @media (prefers-reduced-motion:reduce){.lab-btn,.lab-indice a,.lab-url{transition:none;}}
+  </style>
+</head>
+
+<body class="pagina lab-page">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+      <div class="contenedor">
+        <div class="lab-shell" data-aos="fade-up">
+
+          <header>
+            <nav class="lab-rastro" aria-label="Ruta">
+              <a href="../index.html">Inicio</a> <i class="bi bi-chevron-right"></i>
+              <a href="../linetime.html">LineTime</a> <i class="bi bi-chevron-right"></i>
+              <span>Laboratorio 09</span>
+            </nav>
+            <span class="lab-eyebrow"><i class="bi bi-journal-code"></i> Laboratorio 09 · CNO IV</span>
+            <h1 class="lab-titulo">Traversal Sequences <em>Stripped</em> Non-Recursively</h1>
+            <p class="lab-entradilla">La aplicación no bloquea: <em>limpia</em> las secuencias <span class="lab-payload">../</span> una sola vez. Usando secuencias anidadas, la propia limpieza las reconstruye.</p>
+            <div class="lab-meta">
+              <span><i class="bi bi-calendar3"></i> __ / __ / 2026</span>
+              <span><i class="bi bi-mortarboard"></i> Nivel: Practitioner</span>
+              <span><i class="bi bi-tools"></i> Burp Suite</span>
+            </div>
+          </header>
+
+          <div class="lab-grid">
+            <article class="lab-articulo">
+
+              <section id="introduccion">
+                <h2><span class="ic"><i class="bi bi-flag"></i></span> Introducción</h2>
+                <p class="capitular">Aquí la aplicación no rechaza la petición: elimina (saneamiento por «stripping») las secuencias <span class="lab-payload">../</span> del valor antes de usarlo. El defecto es que lo hace una sola vez, de forma no recursiva. Con secuencias anidadas, al quitar el <span class="lab-payload">../</span> del interior, los caracteres de los extremos se recombinan y forman de nuevo un <span class="lab-payload">../</span> válido que el filtro ya no revisa.</p>
+              </section>
+
+              <section id="objetivo">
+                <h2><span class="ic"><i class="bi bi-bullseye"></i></span> Objetivo</h2>
+                <p>Leer <span class="lab-payload">/etc/passwd</span> evadiendo un filtro de saneamiento no recursivo, mediante secuencias anidadas que se «recomponen» tras la limpieza.</p>
+              </section>
+
+              <section id="laboratorio">
+                <h2><span class="ic"><i class="bi bi-box-arrow-up-right"></i></span> El laboratorio</h2>
+                <p>Este reto pertenece a la Web Security Academy de PortSwigger. Puedes abrirlo aquí:</p>
+                <a class="lab-url" href="https://portswigger.net/web-security/file-path-traversal/lab-sequences-stripped-non-recursively" target="_blank" rel="noopener">
+                  <span class="ico-url"><i class="bi bi-link-45deg"></i></span>
+                  <span class="txt">
+                    <b>File path traversal — Practitioner</b>
+                    <small>portswigger.net/web-security/file-path-traversal/lab-sequences-stripped-non-recursively</small>
+                  </span>
+                  <i class="bi bi-arrow-right flecha"></i>
+                </a>
+              </section>
+
+              <section id="teoria">
+                <h2><span class="ic"><i class="bi bi-mortarboard"></i></span> ¿Qué es y por qué ocurre?</h2>
+                <p>Sanear por eliminación es frágil: si la limpieza se aplica una sola vez, la propia operación de borrado puede reconstruir el patrón que pretendía eliminar. La cadena <span class="lab-payload">....//</span> contiene un <span class="lab-payload">../</span> en su interior; al borrarlo, lo que queda a los lados se une y vuelve a producir <span class="lab-payload">../</span></p>
+                <div class="lab-nota"><b>Clasificación:</b> CWE-22 · OWASP A01: Broken Access Control.</div>
+              </section>
+
+              <section id="procedimiento">
+                <h2><span class="ic"><i class="bi bi-list-ol"></i></span> Procedimiento</h2>
+                <ol>
+                  <li>Iniciar el laboratorio y abrir la tienda desde el navegador de Burp.</li>
+                  <li>Localizar la petición de la imagen (<span class="lab-payload">GET /image</span>) en el HTTP history y enviarla a Repeater.</li>
+                  <li>Comprobar que <span class="lab-payload">../../../etc/passwd</span> no funciona (el filtro limpia las secuencias).</li>
+                  <li>Sustituir el valor por el payload anidado y enviar.</li>
+                  <li>Confirmar 200 OK con el contenido de <span class="lab-payload">/etc/passwd</span> y verificar «Lab Solved».</li>
+                </ol>
+              </section>
+
+              <section id="payload">
+                <h2><span class="ic"><i class="bi bi-braces"></i></span> El payload</h2>
+                <p>El valor que se inyecta en el parámetro del nombre de archivo es:</p>
+                <p><span class="lab-payload">....//....//....//etc/passwd</span></p>
+                <p>Cada bloque <span class="lab-payload">....//</span> sobrevive al filtro: al borrar el <span class="lab-payload">../</span> de su interior, los caracteres restantes se recombinan en un <span class="lab-payload">../</span> válido. Tres bloques equivalen a <span class="lab-payload">../../../</span>, suficientes para llegar a la raíz. Tras la limpieza, la app usa <span class="lab-payload">../../../etc/passwd</span>.</p>
+              </section>
+
+              <section id="evidencia">
+                <h2><span class="ic"><i class="bi bi-camera"></i></span> Evidencia</h2>
+                <p>Captura del laboratorio resuelto:</p>
+                <figure class="lab-figura">
+                  <!-- EDITAR: coloca tu imagen en assets/img/laboratorios/lab9.jpg -->
+                  <img src="../assets/img/laboratorios/lab9.jpg"
+                       alt="Laboratorio 09 resuelto — File path traversal (Lab Solved)"
+                       loading="lazy"
+                       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="ph" style="display:none">
+                    <i class="bi bi-image"></i>
+                    <small>Coloca tu captura en <b>assets/img/laboratorios/lab9.jpg</b></small>
+                  </div>
+                  <figcaption>Figura 1. Estado «Lab Solved» tras leer /etc/passwd.</figcaption>
+                </figure>
+              </section>
+
+              <section id="mitigacion">
+                <h2><span class="ic"><i class="bi bi-shield-check"></i></span> Mitigación</h2>
+                <ul>
+                  <li><b>No sanear por eliminación:</b> borrar <span class="lab-payload">../</span> es frágil; la sanitización no debe ser la defensa principal.</li>
+                  <li><b>Validación por lista blanca:</b> aceptar solo nombres que cumplan un patrón estricto y rechazar (no «limpiar») el resto.</li>
+                  <li><b>Canonicalizar y verificar el contenedor:</b> resolver la ruta final y comprobar que sigue dentro del directorio permitido; esto detiene el anidamiento, las rutas absolutas y las codificaciones por igual.</li>
+                  <li><b>Referencias indirectas y mínimo privilegio.</b></li>
+                </ul>
+              </section>
+
+              <section id="conclusion">
+                <h2><span class="ic"><i class="bi bi-check2-circle"></i></span> Conclusión</h2>
+                <p>Al eliminar <span class="lab-payload">../</span> una sola vez, la aplicación permite que el payload anidado se «recomponga» tras la limpieza en <span class="lab-payload">../../../etc/passwd</span> y logre la lectura arbitraria. Sanear la entrada no equivale a asegurarla: la defensa robusta es lista blanca + canonicalización + verificación del directorio contenedor.</p>
+              </section>
+
+              <nav class="lab-navlabs" aria-label="Otros laboratorios">
+                <a href="lab8.html"><i class="bi bi-arrow-left"></i> Lab anterior</a>
+                <a href="lab10.html">Lab siguiente <i class="bi bi-arrow-right"></i></a>
+              </nav>
+            </article>
+
+            <aside class="lab-aside">
+              <div class="lab-card">
+                <h4><i class="bi bi-info-circle"></i> Ficha del laboratorio</h4>
+                <ul class="lab-ficha">
+                  <li><span class="k">Materia</span><span class="v">CNO IV · Programación WAP</span></li>
+                  <li><span class="k">Plataforma</span><span class="v">PortSwigger · Web Security Academy</span></li>
+                  <li><span class="k">Nivel</span><span class="v">Practitioner</span></li>
+                  <li><span class="k">Clasificación</span><span class="v">CWE-22 · OWASP A01: Broken Access Control</span></li>
+                  <li><span class="k">Herramienta</span><span class="v">Burp Suite</span></li>
+                  <li><span class="k">Entregable</span><span class="v">Informe (PDF)</span></li>
+                </ul>
+              </div>
+
+              <div class="lab-card">
+                <h4><i class="bi bi-list-nested"></i> En esta página</h4>
+                <ul class="lab-indice" data-indice>
+                  <li><a href="#introduccion">Introducción</a></li>
+                  <li><a href="#objetivo">Objetivo</a></li>
+                  <li><a href="#laboratorio">El laboratorio</a></li>
+                  <li><a href="#teoria">¿Qué es y por qué ocurre?</a></li>
+                  <li><a href="#procedimiento">Procedimiento</a></li>
+                  <li><a href="#payload">El payload</a></li>
+                  <li><a href="#evidencia">Evidencia</a></li>
+                  <li><a href="#mitigacion">Mitigación</a></li>
+                  <li><a href="#conclusion">Conclusión</a></li>
+                </ul>
+              </div>
+
+              <div class="lab-card">
+                <h4><i class="bi bi-download"></i> Descargas</h4>
+                <a class="lab-btn" href="../assets/pdf/laboratorios/Lab9.pdf" download>
+                  <i class="bi bi-file-earmark-pdf"></i> Descargar informe
+                </a>
+                <div class="lab-tags" style="margin-top:14px;">
+                  <span>#pathtraversal</span><span>#stripping</span><span>#burpsuite</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+  <script>
+  (function(){
+    var enlaces = document.querySelectorAll('[data-indice] a');
+    if(!enlaces.length || !('IntersectionObserver' in window)) return;
+    var mapa = {};
+    enlaces.forEach(function(a){ mapa[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if(e.isIntersecting){
+          enlaces.forEach(function(a){ a.classList.remove('activo'); });
+          var a = mapa[e.target.id]; if(a) a.classList.add('activo');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('.lab-articulo section[id]').forEach(function(s){ obs.observe(s); });
+  })();
+  </script>
+
+</body>
+</html>
