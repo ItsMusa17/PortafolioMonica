@@ -1424,3 +1424,133 @@ tbody tr:hover { background: rgba(139, 108, 235, 0.07); }
   .indice-submenu { transition: none; }
   [data-aos] { opacity: 1 !important; transform: none !important; }
 }
+
+/* =========================================================================
+   22. PÁGINAS DE LABORATORIO (.lab-*)
+   -------------------------------------------------------------------------
+   Compartido por Laboratorios/lab7.html – lab12.html (antes duplicado
+   como <style> inline idéntico en cada página).
+   ========================================================================= */
+.lab-shell{
+  --tinta:#17101f; --tinta2:#241635;
+  --oro:#d9b25c; --oro-suave:#f0d79a; --violeta:#9a6cff; --ambar:#ff7a59;
+  --texto:#ece6f5; --tenue:#b6a9cf;
+  --panel:rgba(40,28,58,.55); --linea:rgba(217,178,92,.28);
+  position:relative; color:var(--texto); font-family:"Nunito Sans",system-ui,sans-serif;
+  background:
+    radial-gradient(900px 500px at 12% -8%, rgba(154,108,255,.20), transparent 60%),
+    radial-gradient(800px 480px at 100% 0%, rgba(255,122,89,.12), transparent 55%),
+    linear-gradient(160deg,var(--tinta),var(--tinta2));
+  border:1px solid var(--linea); border-radius:22px;
+  padding:clamp(22px,4vw,44px); overflow:hidden; box-shadow:0 30px 70px rgba(10,6,20,.5);
+}
+.lab-shell *{box-sizing:border-box;}
+.lab-shell>*{position:relative;z-index:1;}
+.lab-shell h1,.lab-shell h2,.lab-shell h3,.lab-shell h4{font-family:"Fraunces",serif;line-height:1.15;margin:0;}
+
+/* La página ocupa todo el ancho y tapa el fondo decorativo (los "rojos") */
+.lab-page .contenedor{max-width:none; padding-left:clamp(8px,1.6vw,20px); padding-right:clamp(8px,1.6vw,20px);}
+.lab-page .fondo-magico::before,
+.lab-page .fondo-magico::after{display:none;}
+/* el contenido interno se queda a un ancho cómodo y centrado */
+.lab-shell>header, .lab-shell>.lab-grid{max-width:1180px; margin-left:auto; margin-right:auto;}
+
+/* ---------- Cabecera del artículo ---------- */
+.lab-rastro{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--tenue);margin-bottom:16px;}
+.lab-rastro a{color:var(--oro);text-decoration:none;}
+.lab-rastro i{font-size:10px;opacity:.6;}
+.lab-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--oro);
+  border:1px solid var(--linea);border-radius:999px;padding:5px 13px;margin-bottom:14px;}
+.lab-titulo{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(28px,4.6vw,46px);line-height:1.05;margin:0 0 12px;}
+.lab-titulo em{font-style:italic;background:linear-gradient(90deg,var(--oro-suave),var(--violeta));
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.lab-entradilla{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.3vw,23px);font-style:italic;
+  color:var(--tenue);max-width:62ch;margin:0 0 18px;}
+.lab-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--tenue);padding-bottom:22px;
+  border-bottom:1px solid var(--linea);}
+.lab-meta span{display:inline-flex;align-items:center;gap:7px;}
+.lab-meta i{color:var(--oro);}
+
+/* ---------- Layout 2 columnas ---------- */
+.lab-grid{display:grid;grid-template-columns:1fr 300px;gap:34px;margin-top:26px;align-items:start;}
+@media (max-width:900px){.lab-grid{grid-template-columns:1fr;}}
+
+/* ---------- Columna principal (artículo) ---------- */
+.lab-articulo>section{margin-bottom:34px;scroll-margin-top:90px;}
+.lab-articulo h2{font-size:clamp(21px,2.8vw,28px);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.lab-articulo h2 .ic{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:9px;
+  background:rgba(217,178,92,.12);border:1px solid var(--linea);color:var(--oro);font-size:16px;}
+.lab-articulo h3{font-size:18px;margin:18px 0 8px;color:var(--oro-suave);}
+.lab-articulo p{line-height:1.75;color:#ded7ec;margin:0 0 14px;}
+.lab-articulo ul,.lab-articulo ol{margin:0 0 14px;padding-left:20px;color:#ded7ec;line-height:1.7;}
+.lab-articulo li{margin-bottom:6px;}
+.lab-articulo .capitular::first-letter{font-family:"Fraunces",serif;font-size:3.1em;line-height:.8;
+  float:left;margin:6px 10px 0 0;color:var(--oro);}
+
+/* Enlace del laboratorio (URL) */
+.lab-url{display:flex;align-items:center;gap:14px;text-decoration:none;
+  padding:16px 18px;border-radius:14px;border:1px solid var(--oro);
+  background:linear-gradient(120deg,rgba(217,178,92,.12),rgba(154,108,255,.10));
+  color:var(--texto);transition:filter .15s,transform .12s;}
+.lab-url:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.lab-url .ico-url{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:11px;
+  background:rgba(23,16,31,.55);border:1px solid var(--linea);color:var(--oro);font-size:22px;}
+.lab-url .txt{display:flex;flex-direction:column;line-height:1.3;flex:1;min-width:0;}
+.lab-url .txt b{font-size:15px;color:var(--oro-suave);}
+.lab-url .txt small{font-size:12.5px;color:var(--tenue);word-break:break-all;}
+.lab-url .flecha{color:var(--oro);font-size:18px;flex:none;}
+
+/* Payload / dato en línea (no es una sección de código) */
+.lab-payload{display:inline-block;font-family:"Consolas","Courier New",monospace;font-size:14px;
+  color:#ffe08a;background:#0c0a12;border:1px solid var(--linea);border-radius:8px;padding:6px 12px;margin:2px 0 12px;}
+
+/* Cita / nota */
+.lab-nota{margin:0 0 16px;padding:14px 16px;border-left:3px solid var(--violeta);border-radius:0 10px 10px 0;
+  background:rgba(154,108,255,.08);color:#e4ddf2;font-size:14.5px;line-height:1.6;}
+.lab-nota b{color:var(--oro-suave);}
+
+/* Figura / evidencia (imagen JPG) */
+.lab-figura{margin:0 0 18px;border:1px solid var(--linea);border-radius:12px;overflow:hidden;background:rgba(12,8,18,.5);}
+.lab-figura img{display:block;width:100%;height:auto;}
+.lab-figura .ph{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:var(--tenue);text-align:center;padding:16px;
+  background:radial-gradient(400px 220px at 50% 40%,rgba(154,108,255,.14),transparent 70%);}
+.lab-figura .ph i{font-size:34px;color:var(--oro);}
+.lab-figura figcaption{padding:9px 14px;font-size:12.5px;color:var(--tenue);border-top:1px solid var(--linea);}
+
+/* ---------- Columna lateral (pegajosa) ---------- */
+.lab-aside{position:sticky;top:24px;display:grid;gap:16px;}
+@media (max-width:900px){.lab-aside{position:static;}}
+.lab-card{background:var(--panel);border:1px solid var(--linea);border-radius:16px;padding:18px;backdrop-filter:blur(6px);}
+.lab-card h4{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--oro-suave);margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;}
+.lab-ficha{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+.lab-ficha li{display:grid;gap:2px;padding-bottom:11px;border-bottom:1px dashed rgba(217,178,92,.2);}
+.lab-ficha li:last-child{border-bottom:0;padding-bottom:0;}
+.lab-ficha .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tenue);font-weight:700;}
+.lab-ficha .v{font-weight:600;color:var(--texto);font-size:14px;}
+
+/* Índice */
+.lab-indice{list-style:none;margin:0;padding:0;display:grid;gap:4px;}
+.lab-indice a{display:block;padding:7px 11px;border-radius:8px;color:var(--tenue);text-decoration:none;
+  font-size:13.5px;border-left:2px solid transparent;transition:background .15s,color .15s,border-color .15s;}
+.lab-indice a:hover{background:rgba(217,178,92,.08);color:var(--texto);}
+.lab-indice a.activo{color:var(--oro-suave);border-left-color:var(--oro);background:rgba(217,178,92,.1);}
+
+/* Botón descarga */
+.lab-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;border-radius:11px;
+  font-weight:700;text-decoration:none;font-size:14px;color:#1c1226;
+  background:linear-gradient(90deg,var(--oro-suave),var(--oro));transition:filter .15s,transform .12s;}
+.lab-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+.lab-tags{display:flex;flex-wrap:wrap;gap:7px;}
+.lab-tags span{font-size:11.5px;padding:5px 10px;border-radius:999px;background:rgba(154,108,255,.12);
+  border:1px solid rgba(154,108,255,.3);color:#d9ccff;}
+
+/* Navegación entre labs */
+.lab-navlabs{display:flex;justify-content:space-between;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--linea);}
+.lab-navlabs a{display:inline-flex;align-items:center;gap:8px;color:var(--oro);text-decoration:none;font-weight:600;font-size:14px;}
+.lab-navlabs a:hover{color:var(--oro-suave);}
+.lab-navlabs .disabled{opacity:.35;pointer-events:none;}
+
+@media (prefers-reduced-motion:reduce){.lab-btn,.lab-indice a,.lab-url{transition:none;}}

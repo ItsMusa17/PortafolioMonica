@@ -1,6 +1,0 @@
-CARPETA OPCIONAL PARA IMÁGENES DECORATIVAS
-------------------------------------------
-El diseño no necesita imágenes decorativas: el sello arcano de la portada
-está hecho con SVG dentro del propio index.html, y el resto de los adornos
-son CSS. Esta carpeta queda disponible por si más adelante quieres agregar
-alguna textura o ilustración propia.

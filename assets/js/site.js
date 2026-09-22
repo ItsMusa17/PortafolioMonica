@@ -399,6 +399,31 @@
   }
 
   /* =======================================================================
+     8b. ÍNDICE DE PÁGINA (resalta la sección visible al hacer scroll)
+     Se activa con:  <ul data-indice>...</ul>  +  secciones con id
+     dentro de .lab-articulo (páginas de laboratorio).
+     ======================================================================= */
+  function activarIndicePagina() {
+    var enlaces = document.querySelectorAll("[data-indice] a");
+    if (!enlaces.length || !("IntersectionObserver" in window)) return;
+
+    var mapa = {};
+    Array.prototype.forEach.call(enlaces, function (a) { mapa[a.getAttribute("href").slice(1)] = a; });
+
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) {
+          Array.prototype.forEach.call(enlaces, function (a) { a.classList.remove("activo"); });
+          var a = mapa[e.target.id];
+          if (a) a.classList.add("activo");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+
+    document.querySelectorAll(".lab-articulo section[id]").forEach(function (s) { obs.observe(s); });
+  }
+
+  /* =======================================================================
      9. LIBRERÍAS OPCIONALES (AOS y GLightbox)
      ======================================================================= */
   var glightboxCreado = false;
@@ -441,6 +466,7 @@
     activarSubmenus();
     activarMenu();
     activarSubir();
+    activarIndicePagina();
     activarLibrerias();
     if (window.AOS) window.AOS.refreshHard();
   }
