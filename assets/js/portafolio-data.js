@@ -72,7 +72,13 @@ window.PORTAFOLIO = {
       titulo: "Sistemas de Gestión de la Seguridad",
       resumen: "Políticas, controles y procedimientos que permiten administrar los riesgos y mantener protegida la información dentro de una organización.",
       actividades: [
-        /* EDITAR: aquí irán las actividades del Parcial 2 */
+         {
+          numero: 14,
+          titulo: "Ciberseguridad en una mirada",
+          archivo: "actividad_14.html",
+          descripcion: "Diseño de una infografía profesional en formato vertical que explica de forma visual y sintética un tema de ciberseguridad: qué es, qué riesgos implica y cómo se mitiga.",
+          publicada: true
+        }
       ]
     },
     {
