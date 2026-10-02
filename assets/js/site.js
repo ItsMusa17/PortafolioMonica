@@ -400,8 +400,8 @@
 
   /* =======================================================================
      8b. ÍNDICE DE PÁGINA (resalta la sección visible al hacer scroll)
-     Se activa con:  <ul data-indice>...</ul>  +  secciones con id
-     dentro de .lab-articulo (páginas de laboratorio).
+     Se activa con:  <nav data-indice>...</nav>  +  secciones con id
+     dentro de .lab-articulo (laboratorios) o .actividad-principal (actividades).
      ======================================================================= */
   function activarIndicePagina() {
     var enlaces = document.querySelectorAll("[data-indice] a");
@@ -420,7 +420,7 @@
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
 
-    document.querySelectorAll(".lab-articulo section[id]").forEach(function (s) { obs.observe(s); });
+    document.querySelectorAll(".lab-articulo section[id], .actividad-principal section[id]").forEach(function (s) { obs.observe(s); });
   }
 
   /* =======================================================================

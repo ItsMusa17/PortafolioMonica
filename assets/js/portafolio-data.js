@@ -73,6 +73,13 @@ window.PORTAFOLIO = {
       resumen: "Políticas, controles y procedimientos que permiten administrar los riesgos y mantener protegida la información dentro de una organización.",
       actividades: [
          {
+          numero: 13,
+          titulo: "Red Team Report: Pentesting de My File Server 1",
+          archivo: "actividad_13.html",
+          descripcion: "Informe de pentesting (caja negra) sobre la máquina VulnHub \"My File Server: 1\": desde credenciales expuestas en el sitio web hasta escalada de privilegios a root mediante Dirty COW (CVE-2016-5195).",
+          publicada: true
+        },
+        {
           numero: 14,
           titulo: "Ciberseguridad en una mirada",
           archivo: "actividad_14.html",
