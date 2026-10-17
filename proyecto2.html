@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" data-base="./">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Proyecto – INTERAFAS-LAB: del hallazgo a la gestión del riesgo | Monica Lopez</title>
+  <meta name="description" content="Proyecto integrador de CNO IV – Seguridad Informática: 20 vulnerabilidades explotadas en INTERAFAS-LAB (organismo operador de agua simulado) y su traducción a un SGSI ISO/IEC 27001, un Plan de Respuesta ante Incidentes y un Plan de Comunicación de Crisis.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina proyecto-page">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <div class="contenedor">
+
+        <!-- =========================================================
+             LIENZO DEL PROYECTO (todo el diseño especial va aquí dentro)
+        ========================================================= -->
+        <div class="pr-shell" data-aos="fade-up">
+
+          <!-- ---------- HERO ---------- -->
+          <header>
+            <span class="pr-eyebrow"><i class="bi bi-stars"></i> Proyecto integrador · CNO IV</span>
+            <h1 class="pr-titulo">INTERAFAS-LAB: <em>del hallazgo a la gestión del riesgo</em></h1>
+            <p class="pr-lema">
+              20 vulnerabilidades encadenadas hasta tomar el control de un proceso crítico de agua, y los cuatro
+              documentos con los que una organización real respondería: qué se rompió, por qué, y cómo se gestiona,
+              se contiene y se comunica.
+            </p>
+
+            <div class="pr-chips">
+              <div class="pr-chip"><i class="bi bi-flag"></i><div><b>Hallazgos</b><span>20 banderas confirmadas</span></div></div>
+              <div class="pr-chip"><i class="bi bi-exclamation-octagon"></i><div><b>Críticos (OT)</b><span>6 de severidad crítica</span></div></div>
+              <div class="pr-chip"><i class="bi bi-activity"></i><div><b>Disponibilidad final</b><span>4.1 % (estado catastrófico)</span></div></div>
+              <div class="pr-chip"><i class="bi bi-diagram-3"></i><div><b>Entregables</b><span>Pentest · SGSI · PRI · Crisis</span></div></div>
+            </div>
+          </header>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- SOBRE EL PROYECTO ---------- -->
+          <section class="pr-grid">
+            <div class="pr-bloque">
+              <h2><span class="pr-num">I.</span> Sobre el proyecto</h2>
+              <p>
+                INTERAFAS-LAB simula un organismo operador de agua metropolitano: un portal ciudadano (expedientes,
+                pagos, proveedores), una API interna y una zona de operaciones industriales (OT) que representa el
+                proceso real de distribución de agua. El ejercicio consistió en evaluar su seguridad ofensiva hasta
+                comprobar, bandera por bandera, 20 vulnerabilidades reales, y después construir, a partir de esos
+                mismos hallazgos, el sistema de gestión que una organización necesitaría para prevenir, responder y
+                comunicar un incidente así.
+              </p>
+              <p>
+                Los hallazgos no son incidentes aislados: se encadenan. Exposiciones de información "menores" revelan
+                la arquitectura interna; fallas de autorización dan acceso a datos ajenos; inyección y manipulación de
+                lógica de negocio comprometen sesión y pagos; y, al final, la confianza mal ubicada en una cabecera y
+                en un paquete de firmware sin firma cruza la frontera entre TI y OT hasta alterar un parámetro físico
+                del proceso.
+              </p>
+            </div>
+
+            <aside class="pr-panel">
+              <h3><i class="bi bi-journal-bookmark"></i> Ficha técnica</h3>
+              <ul class="pr-ficha">
+                <li><span class="k">Organización simulada</span><span class="v">INTERAFAS (agua metropolitana)</span></li>
+                <li><span class="k">Metodología ofensiva</span><span class="v">OWASP WSTG/Top 10 · API Top 10 · MITRE ATT&amp;CK ICS</span></li>
+                <li><span class="k">Marco de gestión</span><span class="v">ISO/IEC 27001:2022 · NIST SP 800-61</span></li>
+                <li><span class="k">Resultado del ataque</span><span class="v">Cascada de 5 etapas · ~6,842 alarmas</span></li>
+                <li><span class="k">Entregables</span><span class="v">4 documentos + flyer de concientización</span></li>
+              </ul>
+            </aside>
+          </section>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- RETOS ENFRENTADOS ---------- -->
+          <section>
+            <div class="pr-bloque" style="margin-bottom:18px;">
+              <h2><span class="pr-num">II.</span> Retos enfrentados</h2>
+              <p>Lo más difícil no fue encontrar una vulnerabilidad aislada, sino lo que exigió cada tipo de hallazgo y, después, traducirlo en cuatro documentos consistentes entre sí.</p>
+            </div>
+
+            <div class="pr-conceptos">
+              <div class="pr-concepto"><i class="bi bi-search"></i><div><h4>Pensar en cadena, no en lista</h4><p>Entender que una fuga "media" (como revelar el segmento OT) solo importa porque habilita, varios pasos después, el impacto crítico. Hubo que priorizar la ruta completa, no cada hallazgo por separado.</p></div></div>
+              <div class="pr-concepto"><i class="bi bi-hourglass-split"></i><div><h4>Inferencia sin salida directa</h4><p>La inyección SQL ciega (07) no devolvía datos: hubo que reconstruir cada carácter del token por comparación booleana, un proceso lento que exigió método y paciencia.</p></div></div>
+              <div class="pr-concepto"><i class="bi bi-diagram-2"></i><div><h4>La frontera IT/OT es solo confianza</h4><p>Cruzar de la red corporativa al proceso de agua no requirió un exploit sofisticado: bastó falsificar una cabecera que el servidor jamás debió creer. Fue el reto más revelador del ejercicio.</p></div></div>
+              <div class="pr-concepto"><i class="bi bi-translate"></i><div><h4>Traducir técnico a negocio</h4><p>Explicar un IDOR o un XSS almacenado como riesgo operativo, legal y reputacional —para el SGSI, el PRI y el Plan de Comunicación— fue un ejercicio distinto al pentest: mismo hecho, audiencia y lenguaje diferentes.</p></div></div>
+              <div class="pr-concepto"><i class="bi bi-link-45deg"></i><div><h4>Mantener los cuatro documentos alineados</h4><p>Los mismos 20 hallazgos aparecen en el SGSI (como riesgos), en el PRI (como playbooks) y en el Plan de Crisis (como escenario reputacional); cuidar que no se contradijeran entre sí fue un trabajo aparte.</p></div></div>
+            </div>
+          </section>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- LAS 20 BANDERAS ---------- -->
+          <section>
+            <div class="pr-bloque" style="margin-bottom:18px;">
+              <h2><span class="pr-num">III.</span> Las 20 banderas</h2>
+              <p>Cada reto se resolvió hasta obtener su marcador (bandera) como prueba de explotación. Haz clic en cualquier captura para verla en grande.</p>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 1</span>Reconocimiento y exposición</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-01.png" class="glightbox" data-gallery="banderas" data-title="Figura 1 — OPEN-DOOR: Archivo público olvidado">
+                      <img src="assets/img/evidencias/parcial2/figura-01.png" alt="Evidencia del reto OPEN-DOOR: Archivo público olvidado" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 01</span>
+                    <span class="pr-bandera-nombre">OPEN-DOOR</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Archivo público olvidado.</strong> Se navegó /assets/docs/public/, se descargó el paquete de despliegue y se leyó release-check.env con el token expuesto.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-OPEN-DOOR-01</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-02.png" class="glightbox" data-gallery="banderas" data-title="Figura 2 — LOOK-CLOSER: Información sensible en el cliente">
+                      <img src="assets/img/evidencias/parcial2/figura-02.png" alt="Evidencia del reto LOOK-CLOSER: Información sensible en el cliente" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 02</span>
+                    <span class="pr-bandera-nombre">LOOK-CLOSER</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Información sensible en el cliente.</strong> Se revisó el JavaScript del cliente, se halló la referencia a build-manifest.php y se consultó directamente sin autenticación.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-LOOK-CLOSER-02</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-04.png" class="glightbox" data-gallery="banderas" data-title="Figura 4 — OLD-MEMORIES: Respaldo expuesto">
+                      <img src="assets/img/evidencias/parcial2/figura-04.png" alt="Evidencia del reto OLD-MEMORIES: Respaldo expuesto" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 04</span>
+                    <span class="pr-bandera-nombre">OLD-MEMORIES</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Respaldo expuesto.</strong> Se solicitó transparencia.php.bak y el servidor lo sirvió como texto plano, revelando el código fuente PHP.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-OLD-MEMORIES-04</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-05.png" class="glightbox" data-gallery="banderas" data-title="Figura 5 — TOO-MUCH-INFO: Divulgación por errores">
+                      <img src="assets/img/evidencias/parcial2/figura-05.png" alt="Evidencia del reto TOO-MUCH-INFO: Divulgación por errores" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 05</span>
+                    <span class="pr-bandera-nombre">TOO-MUCH-INFO</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Divulgación por errores.</strong> Se forzó una excepción con un valor fuera de rango y la página de error, con DEBUG activo, mostró rutas y base de datos.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-TOO-MUCH-INFO-05</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-15.png" class="glightbox" data-gallery="banderas" data-title="Figura 15 — BEHIND-THE-DESK: Fuga de arquitectura interna">
+                      <img src="assets/img/evidencias/parcial2/figura-15.png" alt="Evidencia del reto BEHIND-THE-DESK: Fuga de arquitectura interna" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 15</span>
+                    <span class="pr-bandera-nombre">BEHIND-THE-DESK</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Fuga de arquitectura interna.</strong> infrastructure-status.php reveló el segmento de red OT, el gateway RTU-GW-07 y su ruta de acceso.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-BEHIND-THE-DESK-15</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 2</span>Acceso y autorización</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-03.png" class="glightbox" data-gallery="banderas" data-title="Figura 3 — NOT-YOURS: Referencia insegura a objetos (IDOR)">
+                      <img src="assets/img/evidencias/parcial2/figura-03.png" alt="Evidencia del reto NOT-YOURS: Referencia insegura a objetos (IDOR)" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 03</span>
+                    <span class="pr-bandera-nombre">NOT-YOURS</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Referencia insegura a objetos (IDOR).</strong> Ya autenticada, se cambió el id del expediente a uno ajeno (id=2) y el sistema lo mostró sin verificar al dueño.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-NOT-YOURS-03</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-06.png" class="glightbox" data-gallery="banderas" data-title="Figura 6 — WRONG-ROLE: Control de acceso por rol deficiente">
+                      <img src="assets/img/evidencias/parcial2/figura-06.png" alt="Evidencia del reto WRONG-ROLE: Control de acceso por rol deficiente" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 06</span>
+                    <span class="pr-bandera-nombre">WRONG-ROLE</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Control de acceso por rol deficiente.</strong> Se editó la cookie portal_role a procurement_admin desde DevTools y se ejecutó una acción administrativa.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-WRONG-ROLE-06</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-11.jpeg" class="glightbox" data-gallery="banderas" data-title="Figura 11 — HIDDEN-HISTORY: Endpoint no documentado">
+                      <img src="assets/img/evidencias/parcial2/figura-11.jpeg" alt="Evidencia del reto HIDDEN-HISTORY: Endpoint no documentado" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 11</span>
+                    <span class="pr-bandera-nombre">HIDDEN-HISTORY</span>
+                    <span class="pr-bandera-sev media">Media</span>
+                    <p class="pr-bandera-nota"><strong>Endpoint no documentado.</strong> account-context.php reveló en su JSON un enlace interno (links.history) hacia un endpoint que nunca se documentó.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-HIDDEN-HISTORY-11</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-12.jpeg" class="glightbox" data-gallery="banderas" data-title="Figura 12 — SECOND-ACCOUNT: Autorización deficiente en API (BOLA)">
+                      <img src="assets/img/evidencias/parcial2/figura-12.jpeg" alt="Evidencia del reto SECOND-ACCOUNT: Autorización deficiente en API (BOLA)" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 12</span>
+                    <span class="pr-bandera-nombre">SECOND-ACCOUNT</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Autorización deficiente en API (BOLA).</strong> Se cambió el parámetro account del endpoint a una cuenta ajena y la API devolvió su historial completo.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-SECOND-ACCOUNT-12</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 3</span>Explotación técnica</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-07.png" class="glightbox" data-gallery="banderas" data-title="Figura 7 — SILENT-ANSWER: SQL Injection ciega">
+                      <img src="assets/img/evidencias/parcial2/figura-07.png" alt="Evidencia del reto SILENT-ANSWER: SQL Injection ciega" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 07</span>
+                    <span class="pr-bandera-nombre">SILENT-ANSWER</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>SQL Injection ciega.</strong> Sin salida directa, se usó un oráculo booleano en el parámetro ref y búsqueda binaria carácter a carácter para extraer el token.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-SILENT-ANSWER-07</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-08.png" class="glightbox" data-gallery="banderas" data-title="Figura 8 — STORED-WORDS: Entrada persistente insegura (XSS)">
+                      <img src="assets/img/evidencias/parcial2/figura-08.png" alt="Evidencia del reto STORED-WORDS: Entrada persistente insegura (XSS)" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 08</span>
+                    <span class="pr-bandera-nombre">STORED-WORDS</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Entrada persistente insegura (XSS).</strong> Se insertó un script en la descripción de un reporte ciudadano; se ejecutó al visualizarse el reporte.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-STORED-WORDS-08</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-09.png" class="glightbox" data-gallery="banderas" data-title="Figura 9 — TOO-DEEP: Path traversal">
+                      <img src="assets/img/evidencias/parcial2/figura-09.png" alt="Evidencia del reto TOO-DEEP: Path traversal" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 09</span>
+                    <span class="pr-bandera-nombre">TOO-DEEP</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Path traversal.</strong> Se manipuló el parámetro file con secuencias ../ repetidas hasta leer /etc/motd fuera del directorio permitido.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-TOO-DEEP-09</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-10.png" class="glightbox" data-gallery="banderas" data-title="Figura 10 — WHO-ARE-YOU: Gestión débil de sesión">
+                      <img src="assets/img/evidencias/parcial2/figura-10.png" alt="Evidencia del reto WHO-ARE-YOU: Gestión débil de sesión" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 10</span>
+                    <span class="pr-bandera-nombre">WHO-ARE-YOU</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Gestión débil de sesión.</strong> Reutilizando el traversal anterior se leyó includes/config.php, exponiendo los secretos de sesión de la aplicación.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-WHO-ARE-YOU-10</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 4</span>Abuso de lógica de negocio</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-13.png" class="glightbox" data-gallery="banderas" data-title="Figura 13 — PAYMENT-PATH: Abuso de lógica de negocio en pagos">
+                      <img src="assets/img/evidencias/parcial2/figura-13.png" alt="Evidencia del reto PAYMENT-PATH: Abuso de lógica de negocio en pagos" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 13</span>
+                    <span class="pr-bandera-nombre">PAYMENT-PATH</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Abuso de lógica de negocio en pagos.</strong> Se envió un pago con la factura y la cuenta de un tercero; el servidor lo procesó sin validar la titularidad.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-PAYMENT-PATH-13</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-14.png" class="glightbox" data-gallery="banderas" data-title="Figura 14 — TRUSTED-SUPPLIER: Vínculo proveedor-contrato no validado">
+                      <img src="assets/img/evidencias/parcial2/figura-14.png" alt="Evidencia del reto TRUSTED-SUPPLIER: Vínculo proveedor-contrato no validado" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 14</span>
+                    <span class="pr-bandera-nombre">TRUSTED-SUPPLIER</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Vínculo proveedor-contrato no validado.</strong> Se combinó un contract_id y un provider_id sin relación real entre sí, y el servicio aceptó la combinación.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-TRUSTED-SUPPLIER-14</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 5</span>Cruce IT → OT</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-16.png" class="glightbox" data-gallery="banderas" data-title="Figura 16 — BEYOND-THE-WEB: Cruce indebido IT → OT">
+                      <img src="assets/img/evidencias/parcial2/figura-16.png" alt="Evidencia del reto BEYOND-THE-WEB: Cruce indebido IT → OT" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 16</span>
+                    <span class="pr-bandera-nombre">BEYOND-THE-WEB</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Cruce indebido IT → OT.</strong> Se falsificó el encabezado X-Forwarded-For con la IP del segmento OT revelado antes, y se accedió al gateway operacional.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-BEYOND-THE-WEB-16</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-17.jpeg" class="glightbox" data-gallery="banderas" data-title="Figura 17 — EYES-ON-THE-PLANT: Vista HMI sin autenticación">
+                      <img src="assets/img/evidencias/parcial2/figura-17.jpeg" alt="Evidencia del reto EYES-ON-THE-PLANT: Vista HMI sin autenticación" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 17</span>
+                    <span class="pr-bandera-nombre">EYES-ON-THE-PLANT</span>
+                    <span class="pr-bandera-sev alta">Alta</span>
+                    <p class="pr-bandera-nota"><strong>Vista HMI sin autenticación.</strong> Se consultó telemetry.php directamente, sin sesión de operador, y devolvió el estado completo del proceso de agua.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-EYES-ON-THE-PLANT-17</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="pr-fase-banderas">
+              <h3 class="pr-fase-titulo"><span class="pr-fase-paso">Fase 6</span>Compromiso OT y impacto</h3>
+              <div class="pr-carrusel">
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-18.png" class="glightbox" data-gallery="banderas" data-title="Figura 18 — TRUST-THE-PACKAGE: Firmware sin firma del emisor">
+                      <img src="assets/img/evidencias/parcial2/figura-18.png" alt="Evidencia del reto TRUST-THE-PACKAGE: Firmware sin firma del emisor" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 18</span>
+                    <span class="pr-bandera-nombre">TRUST-THE-PACKAGE</span>
+                    <span class="pr-bandera-sev critica">Crítica</span>
+                    <p class="pr-bandera-nota"><strong>Firmware sin firma del emisor.</strong> Se crackeó una contraseña (hash SHA-1) y se instaló un paquete de firmware modificado que pasó la verificación de integridad sin firma.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-TRUST-THE-PACKAGE-18</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-19.png" class="glightbox" data-gallery="banderas" data-title="Figura 19 — CHAIN-REACTION: Cadena de dependencias IT → OT">
+                      <img src="assets/img/evidencias/parcial2/figura-19.png" alt="Evidencia del reto CHAIN-REACTION: Cadena de dependencias IT → OT" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 19</span>
+                    <span class="pr-bandera-nombre">CHAIN-REACTION</span>
+                    <span class="pr-bandera-sev critica">Crítica</span>
+                    <p class="pr-bandera-nota"><strong>Cadena de dependencias IT → OT.</strong> Se recorrieron 6 saltos de activos (gateway → PLC → ... → zona) porque el servidor no aplicaba ningún límite de autorización.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-CHAIN-REACTION-19</code>
+                  </figcaption>
+                </figure>
+                <figure class="pr-bandera" data-aos="fade-up">
+                  <div class="pr-bandera-img">
+                    <a href="assets/img/evidencias/parcial2/figura-20.png" class="glightbox" data-gallery="banderas" data-title="Figura 20 — NOW-YOU-CONTROL: Impacto operacional final">
+                      <img src="assets/img/evidencias/parcial2/figura-20.png" alt="Evidencia del reto NOW-YOU-CONTROL: Impacto operacional final" loading="lazy">
+                    </a>
+                  </div>
+                  <figcaption class="pr-bandera-cuerpo">
+                    <span class="pr-bandera-num">Reto 20</span>
+                    <span class="pr-bandera-nombre">NOW-YOU-CONTROL</span>
+                    <span class="pr-bandera-sev critica">Crítica</span>
+                    <p class="pr-bandera-nota"><strong>Impacto operacional final.</strong> Se cambió el parámetro pressure_setpoint_bar de 4.2 a 9.9 sin validación de rango, desencadenando una cascada de 5 etapas hasta el estado catastrófico.</p>
+                    <code class="pr-bandera-flag">UPSLP_CNOIV-NOW-YOU-CONTROL-20</code>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          </section>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- DOCUMENTOS DEL PROYECTO ---------- -->
+          <section>
+            <div class="pr-bloque" style="margin-bottom:18px;">
+              <h2><span class="pr-num">IV.</span> Documentos del proyecto</h2>
+              <p>Los cuatro entregables, construidos a partir de los mismos 20 hallazgos, más el log del laboratorio como evidencia de haberlo resuelto.</p>
+            </div>
+
+            <div class="pr-descargas">
+              <a class="pr-descarga" href="assets/pdf/parcial2/informe-seguridad-ofensiva.pdf" download>
+                <i class="bi bi-bug"></i>
+                <h4>Informe de Seguridad Ofensiva</h4>
+                <p>Las 20 vulnerabilidades, su cadena de ataque y mitigaciones</p>
+                <span class="pr-descarga-cta">Descargar PDF <i class="bi bi-arrow-down-circle"></i></span>
+              </a>
+              <a class="pr-descarga" href="assets/pdf/parcial2/sgsi-iso27001.pdf" download>
+                <i class="bi bi-clipboard2-check"></i>
+                <h4>SGSI · ISO/IEC 27001</h4>
+                <p>Activos, políticas, matriz de riesgos y mejora continua</p>
+                <span class="pr-descarga-cta">Descargar PDF <i class="bi bi-arrow-down-circle"></i></span>
+              </a>
+              <a class="pr-descarga" href="assets/pdf/parcial2/plan-respuesta-incidentes.pdf" download>
+                <i class="bi bi-shield-exclamation"></i>
+                <h4>Plan de Respuesta ante Incidentes</h4>
+                <p>Roles, fases de respuesta y seis playbooks operativos</p>
+                <span class="pr-descarga-cta">Descargar PDF <i class="bi bi-arrow-down-circle"></i></span>
+              </a>
+              <a class="pr-descarga" href="assets/pdf/parcial2/plan-comunicacion-crisi.pdf" download>
+                <i class="bi bi-megaphone"></i>
+                <h4>Plan de Comunicación de Crisis</h4>
+                <p>Vocería, mensajes por etapa y manejo de desinformación</p>
+                <span class="pr-descarga-cta">Descargar PDF <i class="bi bi-arrow-down-circle"></i></span>
+              </a>
+              <a class="pr-descarga" href="assets/pdf/parcial2/log-laboratorio.csv" download>
+                <i class="bi bi-filetype-csv"></i>
+                <h4>Log del laboratorio</h4>
+                <p>Bitácora de banderas (CSV): evidencia de haber resuelto INTERAFAS-LAB</p>
+                <span class="pr-descarga-cta">Descargar CSV <i class="bi bi-arrow-down-circle"></i></span>
+              </a>
+            </div>
+          </section>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- FLYER DE CONCIENTIZACIÓN ---------- -->
+          <section>
+            <div class="pr-bloque" style="margin-bottom:18px;">
+              <h2><span class="pr-num">V.</span> Flyer de concientización</h2>
+              <p>
+                A partir de la matriz de riesgos del SGSI se diseñó un flyer con los hábitos seguros que previenen los
+                hallazgos del laboratorio. Tras la auditoría interna (Sección 10 del SGSI), se rediseñó con un mensaje
+                específico sobre la frontera IT/OT, el eslabón que terminó habilitando el impacto catastrófico.
+              </p>
+            </div>
+            <figure class="evidencia pr-figura-centrada" data-aos="fade-up">
+              <a href="assets/img/evidencias/parcial2/flyer-mejorado-it-ot.jpeg" class="glightbox" data-gallery="flyer" data-title="Flyer mejorado — Blindamos la frontera IT/OT">
+                <img src="assets/img/evidencias/parcial2/flyer-mejorado-it-ot.jpeg" alt="Flyer de concientización: Blindamos la frontera IT/OT" loading="lazy">
+              </a>
+              <figcaption>Flyer mejorado tras la auditoría: "Blindamos la frontera IT/OT".</figcaption>
+            </figure>
+          </section>
+
+          <div class="pr-regla"></div>
+
+          <!-- ---------- CONCLUSIÓN ---------- -->
+          <section class="pr-bloque">
+            <h2><span class="pr-num">VI.</span> Conclusión</h2>
+            <p>
+              Las 20 vulnerabilidades confirman que la seguridad del entorno falla de manera sistémica y no puntual:
+              los mismos errores de diseño —confiar en datos del cliente, no verificar la propiedad de los objetos, y
+              verificar integridad pero no autenticidad— se repiten en distintos módulos y escalan de severidad
+              conforme se acercan al entorno operacional.
+            </p>
+            <p>
+              El hallazgo decisivo no fue el de mayor peso individual, sino la continuidad de la cadena: una fuga de
+              arquitectura clasificada como media es la que, encadenada con la confianza en cabeceras y en firmware no
+              firmado, hace posible el impacto catastrófico. Por eso la remediación —y los cuatro documentos de este
+              proyecto— priorizan los límites de confianza (segmentación real, firma de firmware, autorización del
+              lado del servidor) por encima de corregir vulnerabilidades de forma aislada. Ninguna medida sola basta:
+              se necesita defensa en profundidad, un plan de respuesta que ya sepa qué hacer, y una forma de
+              comunicarlo sin empeorar la crisis.
+            </p>
+          </section>
+
+        </div><!-- /.pr-shell -->
+
+      </div>
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/portafolio-data.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>
