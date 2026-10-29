@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Actividad 15 – La fotografía como testigo | Monica Lopez</title>
+  <meta name="description" content="Actividad 15 del Parcial 3 de CNO IV – Seguridad Informática: análisis forense de metadatos en un documento de INTERPOL y en una fotografía, incluida su geolocalización GPS.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 3 · Actividad 15</span>
+          <h1>La fotografía como testigo</h1>
+          <p class="subtitulo">Lo que un documento y una foto revelan sin que nadie lo note: autor, fecha y hasta el lugar exacto donde se tomaron</p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial3.html">Parcial 3</a></li>
+              <li><span aria-current="page">Actividad 15</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                Todo archivo digital carga consigo mismo mucho más de lo que se ve a simple vista. Esta actividad analiza
+                los metadatos ocultos de dos archivos reales de un caso de INTERPOL: un formulario de Word y una
+                fotografía tomada con un celular. Con una herramienta forense (ExifToolGUI) se extrae esa información
+                invisible y se demuestra cómo puede identificar a una persona, fecharla y hasta ubicarla en un mapa.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                Extraer y analizar los metadatos de un documento de Word y de una fotografía JPG para identificar
+                información sensible (autoría, fechas, dispositivo y ubicación GPS), y después eliminar esos metadatos
+                para comprobar cómo se reduce la exposición de ese archivo.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="documento" data-aos="fade-up">
+              <h2>Parte I · El documento de INTERPOL</h2>
+              <p>
+                El archivo <code>WOA database application form.docx</code> parece un simple formulario, pero sus
+                metadatos revelan quién lo escribió realmente. INTERPOL lo clasificó como
+                <strong>"Unclassified"</strong>, usando la plantilla corporativa <code>G03 Basic Doc SP.dotx</code> y un
+                tiempo de edición de 45 minutos. Pero el dato más revelador está en dos etiquetas que casi nadie revisa:
+                <strong>Creator</strong> y <strong>Last Modified By</strong>, ambas con el mismo nombre —
+                <strong>Carolyn Lejeune</strong>—, lo que identifica a la persona que creó y editó por última vez el
+                documento, aunque el formulario en sí no la mencione en ningún lado.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-1.png" class="glightbox" data-gallery="act15" data-title="Metadatos del documento de INTERPOL">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-1.png" alt="Metadatos del fichero WOA database application form.docx mostrando clasificación, plantilla y compañía" loading="lazy">
+                </a>
+                <figcaption>Clasificación "Unclassified", plantilla y compañía OIPC-INTERPOL.</figcaption>
+              </figure>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-2.png" class="glightbox" data-gallery="act15" data-title="Creador y última modificación del documento">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-2.png" alt="Metadatos mostrando Creator y Last Modified By como Carolyn Lejeune" loading="lazy">
+                </a>
+                <figcaption>Las etiquetas Creator y Last Modified By identifican a la autora: Carolyn Lejeune.</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="fotografia" data-aos="fade-up">
+              <h2>Parte II · La fotografía (metadatos EXIF)</h2>
+              <p>
+                La imagen <code>XiaomiMiA2Lite.jpg</code> fue tomada con un Xiaomi Mi A2 Lite (ISO 100, f/2.2, 3.8 mm
+                sin flash) el <strong>28 de mayo de 2020 a las 18:11:41</strong>. Hasta aquí son datos técnicos, pero el
+                EXIF también guarda coordenadas GPS exactas: <strong>51.253608, -0.539425</strong>. Al ubicarlas en un
+                mapa, señalan la zona de Burpham, al noreste de Guildford (Surrey, Inglaterra) — es decir, el metadato
+                de una sola foto puede delatar el lugar físico exacto donde estaba la persona que la tomó.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-3.png" class="glightbox" data-gallery="act15" data-title="Metadatos EXIF de la fotografía">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-3.png" alt="Metadatos EXIF de XiaomiMiA2Lite.jpg con ISO, apertura y modelo de cámara" loading="lazy">
+                </a>
+                <figcaption>Datos de cámara y exposición: ISO 100, f/2.2, Xiaomi Mi A2 Lite.</figcaption>
+              </figure>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-4.png" class="glightbox" data-gallery="act15" data-title="Fecha y coordenadas GPS">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-4.png" alt="Fecha de creación y coordenadas GPS exactas de la fotografía" loading="lazy">
+                </a>
+                <figcaption>Fecha de captura y coordenadas GPS exactas almacenadas en el archivo.</figcaption>
+              </figure>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-5.jpeg" class="glightbox" data-gallery="act15" data-title="Ubicación en el mapa">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-5.jpeg" alt="Coordenadas GPS de la fotografía ubicadas en Google Maps, cerca de Guildford, Inglaterra" loading="lazy">
+                </a>
+                <figcaption>Las coordenadas ubican la foto a 3 km de Guildford, Surrey, Reino Unido.</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="limpieza" data-aos="fade-up">
+              <h2>La contramedida: borrar los metadatos</h2>
+              <p>
+                Como ejercicio final, se usó ExifToolGUI (<em>Modify → Remove metadata</em>) para borrar por completo
+                los metadatos de la fotografía. El resultado: el archivo deja de mostrar marca y modelo de cámara,
+                fechas, configuración de exposición y, sobre todo, las coordenadas GPS. Solo quedan los datos mínimos
+                del archivo (tipo JPEG y dimensiones) — la misma imagen, pero sin el rastro que delataba quién, cuándo
+                y dónde la tomó.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-6.png" class="glightbox" data-gallery="act15" data-title="Eliminación de metadatos con ExifToolGUI">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-6.png" alt="Ventana Remove metadata de ExifToolGUI antes de ejecutar la limpieza" loading="lazy">
+                </a>
+                <figcaption>Ventana "Remove metadata" de ExifToolGUI, antes de ejecutar.</figcaption>
+              </figure>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act15-captura-7.png" class="glightbox" data-gallery="act15" data-title="Archivo sin metadatos">
+                  <img src="../assets/img/evidencias/parcial3/act15-captura-7.png" alt="Metadatos del archivo después de eliminarlos, solo quedan datos básicos del archivo" loading="lazy">
+                </a>
+                <figcaption>Después de la limpieza: sin cámara, sin fechas, sin GPS.</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>Un documento o una foto "anónimos" casi nunca lo son: los metadatos suelen guardar autor, dispositivo, fechas y ubicación sin que el contenido visible lo mencione.</li>
+                <li>Las coordenadas GPS en el EXIF de una fotografía son, por sí solas, suficientes para geolocalizar con precisión dónde se tomó.</li>
+                <li>Eliminar metadatos antes de compartir un archivo es una medida simple y efectiva de higiene de privacidad y de seguridad operacional (OPSEC).</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                Esta actividad deja claro que la evidencia digital no está solo en lo que se ve: está en lo que el
+                archivo guarda por debajo. Un formulario reveló a su autora real y una fotografía delató el lugar
+                exacto donde fue tomada, sin que ninguno de los dos lo dijera explícitamente. Revisar —y, cuando haga
+                falta, limpiar— los metadatos es tan parte de la seguridad de la información como cualquier contraseña.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad data-parcial="3" data-actividad="15" aria-label="Navegación entre actividades"></nav>
+
+          </div>
+
+          <aside class="actividad-lateral">
+
+            <div class="ficha-lateral">
+              <h2>Datos de la actividad</h2>
+              <ul class="lista-datos">
+                <li>
+                  <span class="etiqueta">Herramienta</span>
+                  <span class="valor">ExifToolGUI</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Archivos analizados</span>
+                  <span class="valor">.docx (INTERPOL) + .jpg (EXIF)</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Hallazgo clave</span>
+                  <span class="valor">Autoría y geolocalización GPS</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Entregable</span>
+                  <span class="valor">Informe (PDF)</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial3/Act15.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>

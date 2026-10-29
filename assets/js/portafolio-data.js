@@ -95,7 +95,13 @@ window.PORTAFOLIO = {
       titulo: "Temas Actuales en Seguridad Informática",
       resumen: "Nuevas formas de ataque, riesgos presentes en internet y estrategias actuales para proteger dispositivos, redes y datos.",
       actividades: [
-        /* EDITAR: aquí irán las actividades del Parcial 3 */
+        {
+          numero: 15,
+          titulo: "La fotografía como testigo",
+          archivo: "actividad_15.html",
+          descripcion: "Análisis forense de metadatos: qué revela un documento de INTERPOL sobre quién lo creó, y cómo los datos EXIF de una fotografía delatan la cámara, la fecha e incluso la ubicación GPS exacta donde se tomó.",
+          publicada: true
+        }
       ]
     }
   ]
