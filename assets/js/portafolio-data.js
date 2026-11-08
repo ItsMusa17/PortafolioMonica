@@ -101,6 +101,13 @@ window.PORTAFOLIO = {
           archivo: "actividad_15.html",
           descripcion: "Análisis forense de metadatos: qué revela un documento de INTERPOL sobre quién lo creó, y cómo los datos EXIF de una fotografía delatan la cámara, la fecha e incluso la ubicación GPS exacta donde se tomó.",
           publicada: true
+        },
+        {
+          numero: 16,
+          titulo: "La verdad en los bits",
+          archivo: "actividad_16.html",
+          descripcion: "Adquisición forense bit a bit de una memoria USB con FTK Imager: elección del disco físico correcto, imagen Raw (dd) y verificación de integridad con hash MD5 y SHA-1, aplicado a un caso de fraude bancario.",
+          publicada: true
         }
       ]
     }

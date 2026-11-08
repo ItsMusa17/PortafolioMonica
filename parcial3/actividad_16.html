@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Actividad 16 – La verdad en los bits | Monica Lopez</title>
+  <meta name="description" content="Actividad 16 del Parcial 3 de CNO IV – Seguridad Informática: adquisición forense bit a bit de una memoria USB con FTK Imager y verificación de integridad con hash MD5 y SHA-1.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 3 · Actividad 16</span>
+          <h1>La verdad en los bits</h1>
+          <p class="subtitulo">Adquisición forense bit a bit de una memoria USB con FTK Imager, para un caso de fraude bancario</p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial3.html">Parcial 3</a></li>
+              <li><span aria-current="page">Actividad 16</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                Antes de analizar cualquier evidencia digital hay que asegurarla sin alterarla. Esta actividad aplica
+                esa primera fase del análisis forense —la <strong>adquisición</strong>— sobre una memoria USB,
+                usando <strong>FTK Imager</strong> para obtener una copia exacta, bit a bit, del dispositivo completo,
+                en el contexto simulado de un caso de fraude bancario.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                Desarrollar habilidades prácticas en el uso de herramientas de código abierto para la obtención de
+                evidencia digital: crear una imagen forense de una memoria USB con FTK Imager, documentar el proceso
+                paso a paso y verificar su integridad mediante hash.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="proceso" data-aos="fade-up">
+              <h2>El proceso de adquisición</h2>
+              <p>
+                Con FTK Imager 4.3.1.1 instalado y ejecutado como administrador (requisito para acceder a las
+                unidades físicas), se conectó una memoria USB personal como evidencia.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act16-captura-3.png" class="glightbox" data-gallery="act16" data-title="Interfaz de FTK Imager">
+                  <img src="../assets/img/evidencias/parcial3/act16-captura-3.png" alt="Interfaz principal de FTK Imager 4.3.1.1 al iniciar" loading="lazy">
+                </a>
+                <figcaption>Interfaz principal de FTK Imager 4.3.1.1, sin ninguna evidencia cargada todavía.</figcaption>
+              </figure>
+
+              <p>
+                El paso más importante de todo el proceso fue elegir <strong>Physical Drive</strong> y no una unidad
+                lógica: Windows reconoció la memoria como dos unidades (E: y F:, por tratarse de un USB booteable
+                creado con Rufus), pero una imagen lógica de cualquiera de las dos habría dejado fuera la tabla de
+                particiones, la otra partición y el espacio no asignado. Se identificó con cuidado el disco correcto
+                para no confundirlo con el SSD interno del equipo.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act16-captura-7.png" class="glightbox" data-gallery="act16" data-title="Selección del disco físico correcto">
+                  <img src="../assets/img/evidencias/parcial3/act16-captura-7.png" alt="Ventana Select Drive mostrando PHYSICALDRIVE2 - USB Disk 2.0 USB Device [15GB USB]" loading="lazy">
+                </a>
+                <figcaption>Select Drive: \\.\PHYSICALDRIVE2 — la memoria USB completa, no una partición suelta.</figcaption>
+              </figure>
+
+              <p>
+                Como tipo de imagen se eligió <strong>Raw (dd)</strong>: una copia cruda, sin compresión, compatible
+                con prácticamente cualquier herramienta forense. Después se capturó la información del caso
+                (número de caso, examinador, descripción), que FTK Imager incorpora al reporte final.
+              </p>
+
+              <div class="rejilla rejilla-2">
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial3/act16-captura-8.png" class="glightbox" data-gallery="act16" data-title="Formato de imagen Raw (dd)">
+                    <img src="../assets/img/evidencias/parcial3/act16-captura-8.png" alt="Select Image Type con el formato Raw (dd) seleccionado" loading="lazy">
+                  </a>
+                  <figcaption>Formato de imagen elegido: Raw (dd).</figcaption>
+                </figure>
+                <figure class="evidencia" data-aos="fade-up">
+                  <a href="../assets/img/evidencias/parcial3/act16-captura-9.jpeg" class="glightbox" data-gallery="act16" data-title="Datos del caso capturados">
+                    <img src="../assets/img/evidencias/parcial3/act16-captura-9.jpeg" alt="Evidence Item Information con los datos del caso: número, examinador y notas" loading="lazy">
+                  </a>
+                  <figcaption>Evidence Item Information: los datos del caso que viajan con el reporte.</figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <section class="seccion-actividad" id="integridad" data-aos="fade-up">
+              <h2>Verificación de integridad</h2>
+              <p>
+                Lo más importante de toda la adquisición no es la copia en sí, sino poder demostrar que es
+                <strong>idéntica</strong> al original. Para eso sirven los hash: FTK Imager calculó el <strong>MD5</strong>
+                y el <strong>SHA-1</strong> de la memoria al leerla y los comparó contra los de la imagen ya creada.
+                Ambos coincidieron (<em>Match</em>) y no se encontraron bloques dañados — la prueba de que la copia
+                es exacta, bit por bit, y de que el análisis puede hacerse sobre ella sin cuestionar su validez.
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act16-captura-14.png" class="glightbox" data-gallery="act16" data-title="Verificación de hash MD5 y SHA-1">
+                  <img src="../assets/img/evidencias/parcial3/act16-captura-14.png" alt="Drive/Image Verify Results mostrando MD5 y SHA-1 con resultado Match y sin bloques dañados" loading="lazy">
+                </a>
+                <figcaption>Drive/Image Verify Results: MD5 y SHA-1 con resultado "Match".</figcaption>
+              </figure>
+
+              <p>
+                Al terminar, la adquisición quedó dividida en 10 segmentos (por el tamaño de fragmento de 1500 MB)
+                más un archivo <code>.txt</code> con el reporte completo: datos del caso, marcas de tiempo, hash y
+                los datos técnicos de la memoria (modelo, número de serie, geometría del disco).
+              </p>
+
+              <figure class="evidencia" data-aos="fade-up">
+                <a href="../assets/img/evidencias/parcial3/act16-captura-15.jpeg" class="glightbox" data-gallery="act16" data-title="Archivos generados">
+                  <img src="../assets/img/evidencias/parcial3/act16-captura-15.jpeg" alt="Archivos generados en la carpeta de destino: 10 segmentos de la imagen y el reporte .txt" loading="lazy">
+                </a>
+                <figcaption>Los 10 segmentos de la imagen (.001 a .010) y el reporte .txt de la adquisición.</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="formatos" data-aos="fade-up">
+              <h2>Raw, SMART y E01: tres formatos de imagen forense</h2>
+              <p>No todos los formatos de imagen forense guardan lo mismo. La diferencia clave está en qué tanto incorporan dentro del propio archivo:</p>
+
+              <div class="tabla-envoltura">
+                <table>
+                  <thead><tr><th>Característica</th><th>Raw (dd)</th><th>SMART (.s01)</th><th>E01 (EWF)</th></tr></thead>
+                  <tbody>
+                    <tr><td>Copia bit a bit</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
+                    <tr><td>Compresión</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+                    <tr><td>Metadatos del caso en la imagen</td><td>No (aparte)</td><td>Sí</td><td>Sí</td></tr>
+                    <tr><td>Compatibilidad</td><td>Universal</td><td>Limitada</td><td>Muy amplia (estándar de facto)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Se eligió Raw (dd) por su compatibilidad universal; a cambio, el reporte <code>.txt</code> debe conservarse siempre junto con la imagen, porque el formato no guarda esos datos dentro de sí.</p>
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>Entendí por qué en forense digital se copia el <strong>disco físico completo</strong> y no solo las unidades lógicas visibles: ahí vive la tabla de particiones y el espacio no asignado, donde también hay evidencia.</li>
+                <li>Comprobé en la práctica para qué sirve verificar con <strong>dos algoritmos de hash</strong>: si uno coincide pero el otro no, algo cambió; si ambos coinciden, la copia es confiable.</li>
+                <li>Sin bloqueador de escritura, el propio sistema operativo puede modificar la evidencia al conectarla — una limitación real que hay que documentar, no ignorar.</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                Esta práctica deja clara la regla de oro del análisis forense: nunca se trabaja sobre el original. Con
+                FTK Imager se obtuvo una copia bit a bit de la memoria USB, verificada con hash MD5 y SHA-1
+                coincidentes, lista para ser analizada sin poner en duda su integridad. En un caso real, esa
+                verificación es exactamente lo que sostiene a la evidencia frente a un cuestionamiento legal.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad data-parcial="3" data-actividad="16" aria-label="Navegación entre actividades"></nav>
+
+          </div>
+
+          <aside class="actividad-lateral">
+
+            <div class="ficha-lateral">
+              <h2>Datos de la actividad</h2>
+              <ul class="lista-datos">
+                <li>
+                  <span class="etiqueta">Herramienta</span>
+                  <span class="valor">FTK Imager 4.3.1.1</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Formato de imagen</span>
+                  <span class="valor">Raw (dd)</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Verificación</span>
+                  <span class="valor">MD5 + SHA-1 · Match</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Entregable</span>
+                  <span class="valor">Informe (PDF)</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial3/Act16.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>
