@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es" data-base="../">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =========================
+       EDITAR: TÍTULO Y DESCRIPCIÓN
+  ========================= -->
+  <title>Actividad 17 – La memoria del crimen | Monica Lopez</title>
+  <meta name="description" content="Actividad 17 del Parcial 3 de CNO IV – Seguridad Informática: análisis forense de memoria volátil con Volatility sobre el caso OtterCTF.">
+  <meta name="author" content="Monica Isabel Lopez Alcocer">
+
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:opsz,wght@6..12,300..800&display=swap" rel="stylesheet">
+
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="../assets/css/grimorio.css" rel="stylesheet">
+</head>
+
+<body class="pagina">
+
+  <div class="fondo-magico" aria-hidden="true"></div>
+  <a class="salto-contenido" href="#contenido-principal">Saltar al contenido</a>
+
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+
+  <div class="contenido">
+    <main id="contenido-principal" tabindex="-1">
+
+      <header class="cabecera-pagina">
+        <div class="contenedor">
+          <span class="eyebrow">Parcial 3 · Actividad 17</span>
+          <h1>La memoria del crimen</h1>
+          <p class="subtitulo">Análisis forense de memoria volátil con Volatility: el caso OtterCTF</p>
+
+          <nav class="rastro rastro-centrado" aria-label="Ruta de navegación">
+            <ol>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="../parcial3.html">Parcial 3</a></li>
+              <li><span aria-current="page">Actividad 17</span></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      <div class="contenedor">
+        <div class="actividad-layout">
+
+          <div class="actividad-principal">
+
+            <section class="seccion-actividad" id="introduccion" data-aos="fade-up">
+              <h2>Introducción</h2>
+              <p class="capitular">
+                Elementos de la FGM especializada obtuvieron el volcado de memoria RAM (<strong>OtterCTF.vmem</strong>,
+                2 GB) del equipo de un presunto cibercriminal, vinculado a trasiego de estupefacientes y rapto.
+                El objetivo fue analizar ese volcado con <strong>Volatility 2.6</strong> para confirmar o descartar
+                varias pistas de inteligencia: el alias "Morty", el usuario "Ricky", unas iniciales entregadas por
+                SEDENE y CNDI, y el uso de servidores Lunar, correos y Torrent para contactar víctimas.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="objetivo" data-aos="fade-up">
+              <h2>Objetivo</h2>
+              <p>
+                Realizar un análisis forense de memoria volátil sobre el volcado OtterCTF.vmem con Volatility,
+                para identificar al usuario del equipo, su contraseña, su dirección IP, los procesos relevantes
+                que ejecutó y la infraestructura (servidor, correos, cartera de criptomoneda) que usaba para
+                operar, contrastando cada hallazgo contra las hipótesis del caso.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-2.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 2" data-description="imageinfo: marca de tiempo del volcado en UTC y hora local (+0300)">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-2.png" alt="Salida de vol.exe imageinfo mostrando Image date and time en UTC y hora local +0300" loading="lazy">
+                </a>
+                <figcaption>imageinfo: el volcado se capturó el 4 de agosto de 2018 a las 22:34:22 hora local (UTC+3)</figcaption>
+              </figure>
+              <p>
+                El desfase <strong>UTC+3</strong> no prueba la ubicación física del sospechoso, pero orienta la
+                investigación hacia Israel, Rusia occidental o Turquía, y sirve para convertir el resto de las
+                marcas de tiempo del caso.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="perfil" data-aos="fade-up">
+              <h2>Perfil del equipo y contraseña</h2>
+              <p>
+                <code>imageinfo</code> ubicó el perfil <strong>Win7SP1x64</strong> (Windows 7 SP1, 64 bits).
+                Con <code>hivelist</code> se localizaron las colmenas del registro, y <code>hashdump</code> +
+                <code>lsadump</code> recuperaron las cuentas del sistema: <em>Administrator</em>, <em>Guest</em> y
+                el perfil en uso, <strong>Rick</strong>. El secreto <em>DefaultPassword</em> de LSA reveló la
+                contraseña en texto claro.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-4.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 4" data-description="hashdump con el usuario Rick y lsadump con DefaultPassword">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-4.png" alt="Terminal con hivelist, hashdump y lsadump mostrando la contraseña DefaultPassword" loading="lazy">
+                </a>
+                <figcaption>hashdump + lsadump: la contraseña del perfil de Rick es MortyIsReallyAnOtter</figcaption>
+              </figure>
+              <p>
+                La contraseña <strong>MortyIsReallyAnOtter</strong> contiene el alias "Morty" reportado por
+                inteligencia, vinculando directamente este equipo con la persona investigada.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="red" data-aos="fade-up">
+              <h2>Red: IP local y servidor remoto</h2>
+              <p>
+                <code>netscan</code> recorrió la memoria en busca de conexiones activas. En <em>Local Address</em>
+                se repite <strong>192.168.202.131</strong>, la IP privada del equipo al momento del ataque
+                (evidencia EV455FGM). Filtrando por el proceso del juego <em>LunarMS.exe</em> apareció además la
+                conexión al servidor remoto.
+              </p>
+              <div class="rejilla rejilla-2">
+                <figure class="evidencia">
+                  <a href="../assets/img/evidencias/parcial3/act17-captura-5.png" class="glightbox" data-gallery="act17"
+                    data-title="Captura 5" data-description="netscan: dirección local 192.168.202.131">
+                    <img src="../assets/img/evidencias/parcial3/act17-captura-5.png" alt="netscan mostrando la dirección local 192.168.202.131 usada por BitTorrent.exe" loading="lazy">
+                  </a>
+                  <figcaption>netscan: IP local del equipo, 192.168.202.131</figcaption>
+                </figure>
+                <figure class="evidencia">
+                  <a href="../assets/img/evidencias/parcial3/act17-captura-9.png" class="glightbox" data-gallery="act17"
+                    data-title="Captura 9" data-description="netscan filtrado: LunarMS.exe conectado a 77.102.199.102:7575">
+                    <img src="../assets/img/evidencias/parcial3/act17-captura-9.png" alt="netscan filtrado por LunarMS mostrando la conexión a 77.102.199.102 puerto 7575" loading="lazy">
+                  </a>
+                  <figcaption>netscan filtrado: LunarMS.exe conectado a 77.102.199.102:7575</figcaption>
+                </figure>
+              </div>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-10.jpeg" class="glightbox" data-gallery="act17"
+                  data-title="Captura 10" data-description="Geolocalización de 77.102.199.102 en geolocation.com">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-10.jpeg" alt="Mapa de geolocalización ubicando la IP 77.102.199.102 en Londres, Reino Unido" loading="lazy">
+                </a>
+                <figcaption>La IP del servidor Lunar (77.102.199.102) se ubica en Londres, Reino Unido, registrada a Virgin Media</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="equipo" data-aos="fade-up">
+              <h2>Nombre del equipo</h2>
+              <p>
+                <code>printkey</code> leyó la llave <em>ComputerName</em> de la colmena SYSTEM.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-7.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 7" data-description="printkey: ComputerName = WIN-LO6FAF3DTFE">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-7.png" alt="printkey mostrando el nombre del equipo WIN-LO6FAF3DTFE" loading="lazy">
+                </a>
+                <figcaption>printkey: el equipo se llama WIN-LO6FAF3DTFE</figcaption>
+              </figure>
+              <p>
+                Dentro del nombre <strong>WIN-LO6FAF3DTFE</strong> aparecen las iniciales <strong>FAF3</strong>
+                (SEDENE) y <strong>TFE</strong> (CNDI), lo que sugiere que ambas pistas apuntan al mismo equipo.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="procesos" data-aos="fade-up">
+              <h2>Procesos y cronología del ataque</h2>
+              <p>
+                <code>pslist</code>/<code>pstree</code> mostraron tres procesos clave: <strong>LunarMS.exe</strong>
+                (cliente del servidor Lunar del juego MapleStory), <strong>BitTorrent.exe</strong> (el canal
+                usado para enviar videos a las víctimas) y, el más relevante, <strong>"Rick And Morty season 1
+                download.exe"</strong>, que siete segundos después lanzó <strong>vmware-tray.exe</strong> desde
+                una carpeta temporal: un capítulo de serie que en realidad era el ransomware.
+              </p>
+              <table>
+                <thead>
+                  <tr><th>Hora (UTC / local)</th><th>Evento</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>19:27:07 (22:27)</td><td>Se inicia BitTorrent.exe</td></tr>
+                  <tr><td>19:27:39 (22:27)</td><td>LunarMS.exe se conecta a 77.102.199.102:7575</td></tr>
+                  <tr><td>19:29:30 (22:29)</td><td>Se abre Chrome: acceso al correo en mail.com</td></tr>
+                  <tr><td>19:32:55 (22:32)</td><td>Se ejecuta "Rick And Morty season 1 download.exe"</td></tr>
+                  <tr><td>19:33:02 (22:33)</td><td>Se lanza el ransomware vmware-tray.exe</td></tr>
+                  <tr><td>19:34:22 (22:34)</td><td>Captura del volcado de memoria</td></tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="seccion-actividad" id="correos" data-aos="fade-up">
+              <h2>Correos y credenciales</h2>
+              <p>
+                El historial de Chrome (extraído con <code>filescan</code> y <code>dumpfiles</code>) mostró que el
+                archivo .torrent de "Rick And Morty" se descargó desde <strong>mail.com</strong>.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-11.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 11" data-description="DB Browser for SQLite: descargas desde mail.com">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-11.png" alt="DB Browser for SQLite mostrando la descarga del torrent desde mail.com" loading="lazy">
+                </a>
+                <figcaption>Historial de Chrome: el torrent se descargó desde mail.com</figcaption>
+              </figure>
+              <p>
+                Al buscar "@mail.com" en las cadenas del volcado aparecieron las cuentas
+                <strong>rickopicko@mail.com</strong> y <strong>rickypinky@mail.com</strong> (coincide con "Ricky",
+                el usuario que pedía pagos en BTC en Telegram), además del texto
+                <em>Hum@n_I5_Th3_Weak3s7_Link_In_Th3_Ch@in</em>. El plugin <code>clipboard</code> recuperó además
+                la contraseña que el usuario copiaba para entrar a su correo (evidencia EV456FGM).
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-12.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 12" data-description="clipboard: contraseña M@il_Pr0vid0rs">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-12.png" alt="Plugin clipboard mostrando la contraseña M@il_Pr0vid0rs en el portapapeles" loading="lazy">
+                </a>
+                <figcaption>clipboard: contraseña del correo recuperada del portapapeles, M@il_Pr0vid0rs</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="ransomware" data-aos="fade-up">
+              <h2>Ransomware y cartera de rescate</h2>
+              <p>
+                En el escritorio de Rick aparecieron la nota de rescate <strong>READ_IT.txt</strong> y el archivo
+                cifrado <strong>Flag.txt</strong>. <code>procdump</code> reconstruyó el ejecutable del proceso
+                3720 y, al filtrar sus cadenas con el formato de una dirección Bitcoin, apareció la cartera del
+                rescate.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-13.png" class="glightbox" data-gallery="act17"
+                  data-title="Captura 13" data-description="filescan del escritorio y procdump del proceso 3720">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-13.png" alt="filescan mostrando READ_IT.txt y Flag.txt en el escritorio, y procdump del proceso 3720" loading="lazy">
+                </a>
+                <figcaption>filescan + procdump: la nota de rescate y el ejecutable del ransomware (PID 3720)</figcaption>
+              </figure>
+              <p>
+                La cartera <strong>1MmpEmebJkqXG8nQv4cjJSmxZQFVmFo63M</strong> corresponde al ransomware
+                <strong>$ucyLocker</strong> (variante de Hidden Tear), que exige 0.16 BTC. No tiene reportes en
+                Chainabuse, pero eso no la hace legítima: sitios de análisis de malware la documentan como
+                indicador de compromiso.
+              </p>
+              <figure class="evidencia">
+                <a href="../assets/img/evidencias/parcial3/act17-captura-14.jpeg" class="glightbox" data-gallery="act17"
+                  data-title="Captura 14" data-description="Chainabuse: cartera sin reportes">
+                  <img src="../assets/img/evidencias/parcial3/act17-captura-14.jpeg" alt="Chainabuse mostrando la cartera 1MmpEmebJkqXG8nQv4cjJSmxZQFVmFo63M sin reportes" loading="lazy">
+                </a>
+                <figcaption>Chainabuse: la cartera del rescate aún no tiene reportes públicos de fraude</figcaption>
+              </figure>
+            </section>
+
+            <section class="seccion-actividad" id="analisis" data-aos="fade-up">
+              <h2>Contraste de hipótesis</h2>
+              <table>
+                <thead>
+                  <tr><th>Hipótesis</th><th>Evidencia en memoria</th><th>Valoración</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Alias "Morty"</td><td>Contraseña MortyIsReallyAnOtter</td><td>Confirmada</td></tr>
+                  <tr><td>Iniciales FAF3 y TFE</td><td>Nombre del equipo WIN-LO6FAF3DTFE</td><td>Confirmada</td></tr>
+                  <tr><td>Servidores Lunar</td><td>LunarMS.exe → 77.102.199.102:7575 (Londres)</td><td>Confirmada</td></tr>
+                  <tr><td>EV455FGM (IP y SO)</td><td>192.168.202.131 · Windows 7 SP1 x64</td><td>Confirmada</td></tr>
+                  <tr><td>EV456FGM (contraseña y correos)</td><td>M@il_Pr0vid0rs · rickopicko / rickypinky</td><td>Confirmada</td></tr>
+                  <tr><td>Servicios Torrent</td><td>BitTorrent.exe, carpeta C:\Torrents</td><td>Confirmada</td></tr>
+                  <tr><td>"Ricky" y grupo S0_Just_M0v3_Socy</td><td>rickypinky@mail.com · cartera BTC</td><td>Parcial</td></tr>
+                  <tr><td>Víctima GTH</td><td>Sin coincidencias en lo analizado</td><td>Pendiente</td></tr>
+                </tbody>
+              </table>
+              <p>
+                También debe considerarse una hipótesis alternativa: el equipo fue infectado por un ransomware
+                que llegó por un torrent descargado desde el correo menos de dos minutos antes de la captura, lo
+                que podría indicar que el sujeto es a la vez operador y víctima. La memoria demuestra
+                <strong>qué</strong> ocurrió en el equipo, pero no <strong>quién</strong> estaba frente a él.
+              </p>
+            </section>
+
+            <section class="seccion-actividad" id="aprendizajes" data-aos="fade-up">
+              <h2>Aprendizajes obtenidos</h2>
+              <ul class="lista-objetivos">
+                <li>Aprendí a usar Volatility para extraer, a partir de un solo volcado de RAM, información que nunca se escribe en disco: contraseñas en texto claro, el contenido del portapapeles y conexiones de red activas.</li>
+                <li>Reforcé que cada hallazgo debe corroborarse con una segunda fuente (por ejemplo, el historial de Chrome y las cadenas del correo), porque las búsquedas con Strings pueden dar falsos positivos.</li>
+                <li>Comprendí que la memoria es una fotografía de un solo instante y no prueba quién operaba el equipo, por lo que siempre hace falta correlacionarla con otras fuentes para atribuir los hechos a una persona.</li>
+              </ul>
+            </section>
+
+            <section class="seccion-actividad" id="conclusion" data-aos="fade-up">
+              <h2>Conclusión</h2>
+              <blockquote class="quote">
+                El análisis de memoria volátil con Volatility permitió responder casi todas las hipótesis del caso
+                a partir de un solo volcado de RAM: el equipo WIN-LO6FAF3DTFE, con Windows 7 SP1 y la IP
+                192.168.202.131, pertenece al perfil protegido con la contraseña MortyIsReallyAnOtter; desde él se
+                usaban el servidor Lunar, BitTorrent y los correos de "Ricky", y en él se ejecutó un ransomware
+                que exige el pago a una cartera de Bitcoin. Ante un equipo encendido, capturar la RAM antes de
+                apagarlo es un paso indispensable de la investigación de cibercrimen.
+              </blockquote>
+            </section>
+
+            <nav data-nav-actividad data-parcial="3" data-actividad="17" aria-label="Navegación entre actividades"></nav>
+
+          </div>
+
+          <aside class="actividad-lateral">
+
+            <div class="ficha-lateral">
+              <h2>Datos de la actividad</h2>
+              <ul class="lista-datos">
+                <li>
+                  <span class="etiqueta">Materia</span>
+                  <span class="valor">CNO IV · Programación WAP</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Tema</span>
+                  <span class="valor">Forense de memoria volátil (RAM) · Volatility</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Caso</span>
+                  <span class="valor">OtterCTF (vol. de 2 GB)</span>
+                </li>
+                <li>
+                  <span class="etiqueta">Entregable</span>
+                  <span class="valor">Informe de análisis forense (PDF)</span>
+                </li>
+              </ul>
+            </div>
+
+            <nav class="ficha-lateral indice-pagina" data-indice aria-label="Índice de la página">
+              <h2>En esta página</h2>
+              <ol>
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#perfil">Perfil y contraseña</a></li>
+                <li><a href="#red">Red: IP y servidor</a></li>
+                <li><a href="#procesos">Procesos y cronología</a></li>
+                <li><a href="#correos">Correos y credenciales</a></li>
+                <li><a href="#ransomware">Ransomware y cartera</a></li>
+                <li><a href="#analisis">Contraste de hipótesis</a></li>
+                <li><a href="#conclusion">Conclusión</a></li>
+              </ol>
+            </nav>
+
+            <div class="ficha-lateral tarjeta-descarga">
+              <span class="icono-pdf" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+              <h3>PDF de la actividad</h3>
+
+              <a class="boton" href="../assets/pdf/parcial3/Act17.pdf" download>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Descargar PDF
+              </a>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+
+    </main>
+
+    <div id="footer-container"></div>
+  </div>
+
+  <a href="#" id="subir" class="subir" aria-label="Volver arriba">
+    <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+  </a>
+
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/js/portafolio-data.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/vendor-fallback.js"></script>
+
+</body>
+
+</html>

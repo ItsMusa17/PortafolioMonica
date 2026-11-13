@@ -108,6 +108,13 @@ window.PORTAFOLIO = {
           archivo: "actividad_16.html",
           descripcion: "Adquisición forense bit a bit de una memoria USB con FTK Imager: elección del disco físico correcto, imagen Raw (dd) y verificación de integridad con hash MD5 y SHA-1, aplicado a un caso de fraude bancario.",
           publicada: true
+        },
+        {
+          numero: 17,
+          titulo: "La memoria del crimen",
+          archivo: "actividad_17.html",
+          descripcion: "Análisis forense de memoria volátil con Volatility sobre el caso OtterCTF: contraseña en texto claro, dirección IP, servidor remoto, correos y la cartera de Bitcoin de un ransomware, a partir de un solo volcado de RAM.",
+          publicada: true
         }
       ]
     }
